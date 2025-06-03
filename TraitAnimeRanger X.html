@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>เครื่องสุ่ม Trait Anime Ranger X</title>
+    <title>ทดลองสุ่ม Trait Anime Ranger X</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎰</text></svg>">
     <style>
         * {
@@ -170,7 +170,7 @@
             overflow: hidden;
         }
 
-        .btn-until::after {
+/*         .btn-until::after {
             content: '👑';
             position: absolute;
             top: 50%;
@@ -178,7 +178,7 @@
             transform: translateY(-50%);
             font-size: 1.2em;
             animation: bounce 2s ease-in-out infinite;
-        }
+        } */
 
         .btn-rates {
             background: linear-gradient(135deg, #4285F4, #0F9D58);
@@ -505,19 +505,44 @@
             }
         }
 
+        .trait-icon {
+            width: 50px;
+            height: 50px;
+            object-fit: contain;
+            filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.3));
+            transition: transform 0.3s ease;
+        }
+
+        .trait-icon:hover {
+            transform: scale(1.1);
+        }
+
+        .result-item:hover .trait-icon {
+            transform: scale(1.15);
+        }
+
     </style>
 </head>
 
 <body>
     <div class="container">
-        <h1>🎰 เครื่องสุ่ม Trait Anime Ranger X</h1>
+        <h1>🎰 ทดลองสุ่ม Trait Anime Ranger X</h1>
 
         <div class="button-group">
         <button class="btn btn-single" onclick="rollSingle()">🎲 สุ่ม 1 ครั้ง</button>
         <button class="btn btn-ten" onclick="rollTen()">🎲 สุ่ม 10 ครั้ง</button>
         <button class="btn btn-hundred" onclick="rollHundred()">🎲 สุ่ม 100 ครั้ง</button>
-        <button class="btn btn-until" onclick="rollUntilSovereign()" style="padding-right: 50px;">
+        <button class="btn btn-until" onclick="rollUntilSovereign()" style="padding: 18px 30px; display: flex; align-items: center; justify-content: center; gap: 10px;">
+            <img src="https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Sovereign.svg" 
+                alt="Sovereign" 
+                style="width: 24px; height: 24px; filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.3));" 
+                onerror="this.style.display='none'">
             สุ่มจนได้ SOVEREIGN
+            <img src="https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Sovereign.svg" 
+                alt="Sovereign" 
+                style="width: 24px; height: 24px; filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.3));" 
+                onerror="this.style.display='none'">
+        </button>
         </button>
         <button class="btn btn-rates" onclick="showRates()">📊 ดูอัตราเรท</button>
         <button class="btn" onclick="resetSovereignCount()"
@@ -569,11 +594,16 @@
 
                 html += `
                     <div class="result-item rarity-${base.rarity} ${isRainbow}">
-                        <div class="result-name">${key}</div>
-                        <div class="result-chance">
-                            ${count > 1
-                                ? traits.map(t => `${t.name}: ${t.chance}%`).join("<br>")
-                                : `(โอกาส ${base.chance}%)`}
+                        <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 10px;">
+                            <img src="${base.icon}" alt="${key}" style="width: 50px; height: 50px; object-fit: contain; filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.3));" onerror="this.style.display='none'">
+                            <div>
+                                <div class="result-name">${key}</div>
+                                <div class="result-chance">
+                                    ${count > 1
+                                        ? traits.map(t => `${t.name}: ${t.chance}%`).join("<br>")
+                                        : `(โอกาส ${base.chance}%)`}
+                                </div>
+                            </div>
                         </div>
                         <div class="result-description">${base.description}</div>
                         <div class="result-details">
@@ -589,160 +619,183 @@
             resultsDiv.innerHTML = html;
         }
 
+        // 1. อัปเดต rarities array เพื่อเพิ่ม icon path
         const rarities = [
             {
                 name: "Sovereign",
                 chance: 0.1,
                 description: "พลังสูงสุด!",
                 details: ["-300% พลังชีวิต", "-300% ความเสียหาย", "-50% ระยะ", "-ลดจำนวนการเกิดสูงสุดเหลือ 1"],
-                rarity: "sovereign"
+                rarity: "sovereign",
+                icon: "https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Sovereign.svg"
             },
             {
                 name: "Duplicator",
                 chance: 0.15,
                 description: "ยูนิตนี้จะถูกโคลนเมื่อเกิด!",
                 details: ["-100% พลังชีวิต", "-100% ความเสียหาย", "-เมื่อยูนิตนี้เกิด จะมี 2 ตัวเกิดแทน"],
-                rarity: "duplicator"
+                rarity: "duplicator",
+                icon: "https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Duplicator.svg"
             },
             {
                 name: "Capitalist",
                 chance: 0.25,
                 description: "ลดต้นทุนอย่างมากและแข็งแกร่ง!",
                 details: ["-50% ต้นทุน", "50% ความเสียหาย", "50% พลังชีวิต", "เพิ่มจำนวนเกิดได้อีก 1"],
-                rarity: "capitalist"
+                rarity: "capitalist",
+                icon: "https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Capitalist.svg"
             },
             {
                 name: "Seraph",
                 chance: 0.5,
                 description: "พลังเหนือระดับ!",
                 details: ["50% ระยะ", "50% ความเสียหาย", "50% พลังชีวิต", "30% หลบหลีก"],
-                rarity: "seraph"
+                rarity: "seraph",
+                icon: "https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Seraph.svg"
             },
             {
                 name: "Violent",
                 chance: 2.5,
                 description: "เพิ่มความเสียหายอย่างรุนแรง!",
                 details: ["25% ความเสียหาย"],
-                rarity: "legendary"
+                rarity: "legendary",
+                icon: "https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Violent.svg"
             },
             {
                 name: "Millionaire",
                 chance: 2.5,
                 description: "ลดต้นทุนอย่างมีนัยสำคัญ!",
                 details: ["20% ต้นทุน"],
-                rarity: "legendary"
+                rarity: "legendary",
+                icon: "https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Millionaire.svg"
             },
             {
                 name: "Juggernaut",
                 chance: 2.5,
                 description: "เพิ่มพลังชีวิตอย่างมาก!",
                 details: ["25% พลังชีวิต"],
-                rarity: "legendary"
+                rarity: "legendary",
+                icon: "https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Juggernaut.svg"
             },
             {
                 name: "Blitz",
                 chance: 3.5,
                 description: "เพิ่มระยะอย่างมาก!",
                 details: ["25% ระยะ"],
-                rarity: "epic"
+                rarity: "epic",
+                icon: "https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Blitz.svg"
             },
             {
                 name: "Jokester",
                 chance: 5,
                 description: "ยูนิตที่สมดุล!",
                 details: ["5% ระยะ", "5% ความเสียหาย", "5% พลังชีวิต"],
-                rarity: "epic"
+                rarity: "epic",
+                icon: "https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Jokester.svg"
             },
             {
                 name: "Investor",
                 chance: 5,
                 description: "ยูนิตนี้มีต้นทุนลดลง!",
                 details: ["-10% ต้นทุน"],
-                rarity: "epic"
+                rarity: "epic",
+                icon: "https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Investor.svg"
             },
             {
                 name: "Colossal",
                 chance: 5,
                 description: "ยูนิตนี้เชี่ยวชาญด้านพลังชีวิต!",
                 details: ["15% พลังชีวิต"],
-                rarity: "epic"
+                rarity: "epic",
+                icon: "https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Colossal.svg"
             },
             {
                 name: "Sniper",
                 chance: 5,
                 description: "ยูนิตนี้เชี่ยวชาญด้านระยะ!",
                 details: ["15% ระยะ"],
-                rarity: "epic"
+                rarity: "epic",
+                icon: "https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Sniper.svg"
             },
             {
                 name: "Brute",
                 chance: 5,
                 description: "ยูนิตนี้เชี่ยวชาญด้านความเสียหาย!",
                 details: ["15% ความเสียหาย"],
-                rarity: "epic"
+                rarity: "epic",
+                icon: "https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Brute.svg"
             },
             {
                 name: "Endure I",
                 chance: 8,
                 description: "ยูนิตนี้มีพลังชีวิตเพิ่มขึ้น!",
                 details: ["5% พลังชีวิต"],
-                rarity: "rare"
+                rarity: "rare",
+                icon: "https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Endure.svg"
             },
             {
                 name: "Endure II",
                 chance: 7,
                 description: "ยูนิตนี้มีพลังชีวิตเพิ่มขึ้น!",
                 details: ["7% พลังชีวิต"],
-                rarity: "rare"
+                rarity: "rare",
+                icon: "https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Endure.svg"
             },
             {
                 name: "Endure III",
                 chance: 6,
                 description: "ยูนิตนี้มีพลังชีวิตเพิ่มขึ้น!",
                 details: ["10% พลังชีวิต"],
-                rarity: "rare"
+                rarity: "rare",
+                icon: "https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Endure.svg"
             },
             {
                 name: "Horizon I",
                 chance: 8,
                 description: "ยูนิตนี้มีระยะเพิ่มขึ้น!",
                 details: ["5% ระยะ"],
-                rarity: "rare"
+                rarity: "rare",
+                icon: "https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Horizon.svg"
             },
             {
                 name: "Horizon II",
                 chance: 7,
                 description: "ยูนิตนี้มีระยะเพิ่มขึ้น!",
                 details: ["7% ระยะ"],
-                rarity: "rare"
+                rarity: "rare",
+                icon: "https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Horizon.svg"
             },
             {
                 name: "Horizon III",
                 chance: 6,
                 description: "ยูนิตนี้มีระยะเพิ่มขึ้น!",
                 details: ["10% ระยะ"],
-                rarity: "rare"
+                rarity: "rare",
+                icon: "https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Horizon.svg"
             },
             {
                 name: "Superior I",
                 chance: 8,
                 description: "ยูนิตนี้มีความเสียหายเพิ่มขึ้น!",
                 details: ["5% ความเสียหาย"],
-                rarity: "rare"
+                rarity: "rare",
+                icon: "https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Superior.svg"
             },
             {
                 name: "Superior II",
                 chance: 7,
                 description: "ยูนิตนี้มีความเสียหายเพิ่มขึ้น!",
                 details: ["7% ความเสียหาย"],
-                rarity: "rare"
+                rarity: "rare",
+                icon: "https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Superior.svg"
             },
             {
                 name: "Superior III",
                 chance: 6,
                 description: "ยูนิตนี้มีความเสียหายเพิ่มขึ้น!",
                 details: ["10% ความเสียหาย"],
-                rarity: "rare"
+                rarity: "rare",
+                icon: "https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Superior.svg"
             }
         ];
 
@@ -764,12 +817,18 @@
             return rarities[rarities.length - 1]; // fallback to common
         }
 
+        // 2. อัปเดตฟังก์ชัน displayResult เพื่อแสดงรูปภาพ
         function displayResult(item) {
             const isRainbow = item.chance === 0.1 ? "rainbow-border" : "";
             return `
                 <div class="result-item rarity-${item.rarity} ${isRainbow}">
-                    <div class="result-name">${item.name}</div>
-                    <div class="result-chance">(โอกาส ${item.chance}%)</div>
+                    <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 10px;">
+                        <img src="${item.icon}" alt="${item.name}" style="width: 50px; height: 50px; object-fit: contain; filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.3));" onerror="this.style.display='none'">
+                        <div>
+                            <div class="result-name">${item.name}</div>
+                            <div class="result-chance">(โอกาส ${item.chance}%)</div>
+                        </div>
+                    </div>
                     <div class="result-description">${item.description}</div>
                     <div class="result-details">
                         ${item.details.join(' • ')}
@@ -1000,7 +1059,15 @@
 
         function rollUntilSovereign() {
             const resultsDiv = document.getElementById('results');
-            resultsDiv.innerHTML = '<div class="loading">👑 กำลังสุ่มจนได้ Sovereign... อดทนรอหน่อยนะ!</div>';
+            resultsDiv.innerHTML = `
+                <div class="loading">
+                    <img src="https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Sovereign.svg" 
+                         alt="Sovereign" 
+                         style="width: 40px; height: 40px; margin-right: 10px; vertical-align: middle; filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.3));" 
+                         onerror="this.style.display='none'">
+                    กำลังสุ่มจนได้ Sovereign... อดทนรอหน่อยนะ!
+                </div>
+            `;
 
             setTimeout(() => {
                 let rolls = 0;
@@ -1013,7 +1080,13 @@
 
 
                 resultsDiv.innerHTML = `
-                    <h3 class="magical-text">👑 สุ่มจนได้ Sovereign!</h3>
+                    <h3 class="magical-text">
+                        <img src="https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Sovereign.svg" 
+                             alt="Sovereign" 
+                             style="width: 50px; height: 50px; margin-right: 15px; vertical-align: middle; filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.3));" 
+                             onerror="this.style.display='none'">
+                        สุ่มจนได้ Sovereign!
+                    </h3>
                     <div class="stats-summary">
                         <div class="stat-item">🎲 จำนวนครั้งที่สุ่ม: ${rolls.toLocaleString()} ครั้ง</div>
                         <div class="stat-item">📊 โอกาสที่เกิดขึ้น: ${(100 / rolls).toFixed(6)}%</div>
@@ -1026,6 +1099,9 @@
             }, 1000);
         }
     </script>
+    <footer style="margin-top: 50px; text-align: center; font-size: 1em; color: rgba(255, 255, 255, 0.75); font-weight: 500; text-shadow: 1px 1px 3px rgba(0,0,0,0.5);">
+        © 2025 <span style="color:#FF4081;">Random Trait</span> <span style="color:#00BCD4;">AnimeRange X</span> By <span style="color:#FFD700;">Meone</span> 🚀
+    </footer>
 </body>
 
 </html>
