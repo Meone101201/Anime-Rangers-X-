@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ทดลองสุ่ม Trait Anime Ranger X</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎰</text></svg>">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border: 1px solid #ddd;
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            font-size: 2.2em;
+            font-weight: 600;
+        }
+
+        .button-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+
+        .btn {
+            padding: 12px 20px;
+            border: 2px solid #3498db;
+            background: white;
+            color: #3498db;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .btn:hover {
+            background: #3498db;
+            color: white;
+        }
+
+        .btn-primary { border-color: #2ecc71; color: #2ecc71; }
+        .btn-primary:hover { background: #2ecc71; color: white; }
+
+        .btn-secondary { border-color: #e74c3c; color: #e74c3c; }
+        .btn-secondary:hover { background: #e74c3c; color: white; }
+
+        .btn-special { border-color: #9b59b6; color: #9b59b6; }
+        .btn-special:hover { background: #9b59b6; color: white; }
+
+        .results {
+            background: #fafafa;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 20px;
+            margin-top: 20px;
+            min-height: 200px;
+        }
+
+        .results h3 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 1.4em;
+            font-weight: 600;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 8px;
+        }
+
+        .result-item {
+            margin: 15px 0;
+            padding: 15px;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            border-left: 4px solid #3498db;
+        }
+
+        .result-item.sovereign { border-left-color: #e74c3c; background: #fdf2f2; }
+        .result-item.duplicator { border-left-color: #e91e63; background: #fdf2f5; }
+        .result-item.capitalist { border-left-color: #9c27b0; background: #f8f2ff; }
+        .result-item.seraph { border-left-color: #673ab7; background: #f5f2ff; }
+        .result-item.legendary { border-left-color: #ff5722; background: #fff8f2; }
+        .result-item.epic { border-left-color: #ff9800; background: #fff9f2; }
+        .result-item.rare { border-left-color: #2196f3; background: #f2f8ff; }
+        .result-item.common { border-left-color: #4caf50; background: #f2fff2; }
+
+        .result-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+
+        .result-icon {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+        }
+
+        .result-name {
+            font-weight: 600;
+            font-size: 1.1em;
+            color: #2c3e50;
+        }
+
+        .result-chance {
+            color: #7f8c8d;
+            font-size: 0.9em;
+        }
+
+        .result-description {
+            color: #34495e;
+            margin-bottom: 5px;
+        }
+
+        .result-details {
+            color: #7f8c8d;
+            font-size: 0.9em;
+        }
+
+        .stats-summary {
+            background: #e8f6f3;
+            border: 1px solid #16a085;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .stat-item {
+            display: inline-block;
+            margin: 5px 10px;
+            padding: 8px 12px;
+            background: white;
+            border: 1px solid #16a085;
+            border-radius: 4px;
+            font-weight: 500;
+            color: #16a085;
+        }
+
+        .loading {
+            text-align: center;
+            color: #7f8c8d;
+            font-style: italic;
+            padding: 30px;
+        }
+
+        .welcome-text {
+            text-align: center;
+            color: #7f8c8d;
+            font-style: italic;
+            padding: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .container { padding: 15px; }
+            h1 { font-size: 1.8em; }
+            .button-group { grid-template-columns: 1fr; }
+            .btn { padding: 10px 15px; font-size: 13px; }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>ทดลองสุ่ม Trait Anime Ranger X</h1>
+
+        <div class="button-group">
+            <button class="btn btn-primary" onclick="rollSingle()">สุ่ม 1 ครั้ง</button>
+            <button class="btn btn-primary" onclick="rollTen()">สุ่ม 10 ครั้ง</button>
+            <button class="btn btn-primary" onclick="rollHundred()">สุ่ม 100 ครั้ง</button>
+            <button class="btn btn-special" onclick="rollUntilSovereign()">สุ่มจนได้ SOVEREIGN</button>
+            <button class="btn" onclick="showRates()">ดูอัตราเรท</button>
+            <button class="btn btn-secondary" onclick="resetSovereignCount()">รีเซ็ตการสุ่ม</button>
+        </div>
+
+        <div class="results" id="results">
+            <h3>ผลการสุ่ม</h3>
+            <div class="welcome-text">กดปุ่มเพื่อเริ่มการทดลองสุ่ม Trait</div>
+        </div>
+    </div>
+
+    <script>
+        let totalRollsUntilSovereign = 0;
+        let totalSovereignCount = 0;
+        let totalRollsOverall = 0;
+
+        const rarities = [
+            {
+                name: "Sovereign", chance: 0.1, description: "พลังสูงสุด!",
+                details: ["-300% พลังชีวิต", "-300% ความเสียหาย", "-50% ระยะ", "-ลดจำนวนการเกิดสูงสุดเหลือ 1"],
+                rarity: "sovereign", icon: "https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Sovereign.svg"
+            },
+            {
+                name: "Duplicator", chance: 0.15, description: "ยูนิตนี้จะถูกโคลนเมื่อเกิด!",
+                details: ["-100% พลังชีวิต", "-100% ความเสียหาย", "-เมื่อยูนิตนี้เกิด จะมี 2 ตัวเกิดแทน"],
+                rarity: "duplicator", icon: "https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Duplicator.svg"
+            },
+            {
+                name: "Capitalist", chance: 0.25, description: "ลดต้นทุนอย่างมากและแข็งแกร่ง!",
+                details: ["-50% ต้นทุน", "50% ความเสียหาย", "50% พลังชีวิต", "เพิ่มจำนวนเกิดได้อีก 1"],
+                rarity: "capitalist", icon: "https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Capitalist.svg"
+            },
+            {
+                name: "Seraph", chance: 0.5, description: "พลังเหนือระดับ!",
+                details: ["50% ระยะ", "50% ความเสียหาย", "50% พลังชีวิต", "30% หลบหลีก"],
+                rarity: "seraph", icon: "https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Seraph.svg"
+            },
+            {
+                name: "Violent", chance: 2.5, description: "เพิ่มความเสียหายอย่างรุนแรง!",
+                details: ["25% ความเสียหาย"], rarity: "legendary",
+                icon: "https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Violent.svg"
+            },
+            {
+                name: "Millionaire", chance: 2.5, description: "ลดต้นทุนอย่างมีนัยสำคัญ!",
+                details: ["20% ต้นทุน"], rarity: "legendary",
+                icon: "https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Millionaire.svg"
+            },
+            {
+                name: "Juggernaut", chance: 2.5, description: "เพิ่มพลังชีวิตอย่างมาก!",
+                details: ["25% พลังชีวิต"], rarity: "legendary",
+                icon: "https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Juggernaut.svg"
+            },
+            {
+                name: "Blitz", chance: 3.5, description: "เพิ่มระยะอย่างมาก!",
+                details: ["25% ระยะ"], rarity: "epic",
+                icon: "https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Blitz.svg"
+            },
+            {
+                name: "Jokester", chance: 5, description: "ยูนิตที่สมดุล!",
+                details: ["5% ระยะ", "5% ความเสียหาย", "5% พลังชีวิต"], rarity: "epic",
+                icon: "https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Jokester.svg"
+            },
+            {
+                name: "Investor", chance: 5, description: "ยูนิตนี้มีต้นทุนลดลง!",
+                details: ["-10% ต้นทุน"], rarity: "epic",
+                icon: "https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Investor.svg"
+            },
+            {
+                name: "Colossal", chance: 5, description: "ยูนิตนี้เชี่ยวชาญด้านพลังชีวิต!",
+                details: ["15% พลังชีวิต"], rarity: "epic",
+                icon: "https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Colossal.svg"
+            },
+            {
+                name: "Sniper", chance: 5, description: "ยูนิตนี้เชี่ยวชาญด้านระยะ!",
+                details: ["15% ระยะ"], rarity: "epic",
+                icon: "https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Sniper.svg"
+            },
+            {
+                name: "Brute", chance: 5, description: "ยูนิตนี้เชี่ยวชาญด้านความเสียหาย!",
+                details: ["15% ความเสียหาย"], rarity: "epic",
+                icon: "https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Brute.svg"
+            },
+            {
+                name: "Endure I", chance: 8, description: "ยูนิตนี้มีพลังชีวิตเพิ่มขึ้น!",
+                details: ["5% พลังชีวิต"], rarity: "rare",
+                icon: "https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Endure.svg"
+            },
+            {
+                name: "Endure II", chance: 7, description: "ยูนิตนี้มีพลังชีวิตเพิ่มขึ้น!",
+                details: ["7% พลังชีวิต"], rarity: "rare",
+                icon: "https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Endure.svg"
+            },
+            {
+                name: "Endure III", chance: 6, description: "ยูนิตนี้มีพลังชีวิตเพิ่มขึ้น!",
+                details: ["10% พลังชีวิต"], rarity: "rare",
+                icon: "https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Endure.svg"
+            },
+            {
+                name: "Horizon I", chance: 8, description: "ยูนิตนี้มีระยะเพิ่มขึ้น!",
+                details: ["5% ระยะ"], rarity: "rare",
+                icon: "https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Horizon.svg"
+            },
+            {
+                name: "Horizon II", chance: 7, description: "ยูนิตนี้มีระยะเพิ่มขึ้น!",
+                details: ["7% ระยะ"], rarity: "rare",
+                icon: "https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Horizon.svg"
+            },
+            {
+                name: "Horizon III", chance: 6, description: "ยูนิตนี้มีระยะเพิ่มขึ้น!",
+                details: ["10% ระยะ"], rarity: "rare",
+                icon: "https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Horizon.svg"
+            },
+            {
+                name: "Superior I", chance: 8, description: "ยูนิตนี้มีความเสียหายเพิ่มขึ้น!",
+                details: ["5% ความเสียหาย"], rarity: "rare",
+                icon: "https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Superior.svg"
+            },
+            {
+                name: "Superior II", chance: 7, description: "ยูนิตนี้มีความเสียหายเพิ่มขึ้น!",
+                details: ["7% ความเสียหาย"], rarity: "rare",
+                icon: "https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Superior.svg"
+            },
+            {
+                name: "Superior III", chance: 6, description: "ยูนิตนี้มีความเสียหายเพิ่มขึ้น!",
+                details: ["10% ความเสียหาย"], rarity: "rare",
+                icon: "https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Superior.svg"
+            }
+        ];
+
+        function getRandomItem() {
+            const random = Math.random() * 100;
+            let currentChance = 0;
+            for (let item of rarities) {
+                currentChance += item.chance;
+                if (random <= currentChance) return item;
+            }
+            return rarities[rarities.length - 1];
+        }
+
+        function displayResult(item) {
+            return `
+                <div class="result-item ${item.rarity}">
+                    <div class="result-header">
+                        <img src="${item.icon}" alt="${item.name}" class="result-icon" onerror="this.style.display='none'">
+                        <div>
+                            <div class="result-name">${item.name}</div>
+                            <div class="result-chance">โอกาส ${item.chance}%</div>
+                        </div>
+                    </div>
+                    <div class="result-description">${item.description}</div>
+                    <div class="result-details">${item.details.join(' • ')}</div>
+                </div>
+            `;
+        }
+
+        function rollSingle() {
+            const item = getRandomItem();
+            totalRollsUntilSovereign++;
+            totalRollsOverall++;
+            
+            if (item.name === "Sovereign") {
+                totalSovereignCount++;
+                alert("ได้ Sovereign แล้ว!");
+            }
+
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = `
+                <h3>ผลการสุ่ม 1 ครั้ง</h3>
+                <div class="stats-summary">
+                    <div class="stat-item">Sovereign ที่ได้: ${totalSovereignCount}</div>
+                    <div class="stat-item">สุ่มแล้ว: ${totalRollsUntilSovereign} ครั้ง</div>
+                    <div class="stat-item">รวมทั้งหมด: ${totalRollsOverall} ครั้ง</div>
+                </div>
+                ${displayResult(item)}
+            `;
+
+            if (item.name === "Sovereign") {
+                totalRollsUntilSovereign = 0;
+            }
+        }
+
+        function rollTen() {
+            const items = [];
+            let sovereignCount = 0;
+            
+            for (let i = 0; i < 10; i++) {
+                totalRollsUntilSovereign++;
+                totalRollsOverall++;
+                const item = getRandomItem();
+                items.push(item);
+                
+                if (item.name === "Sovereign") {
+                    sovereignCount++;
+                    totalSovereignCount++;
+                }
+            }
+
+            if (sovereignCount > 0) {
+                alert(`ได้ Sovereign ${sovereignCount} ตัวใน 10 ครั้ง!`);
+            }
+
+            const itemCounts = {};
+            items.forEach(item => {
+                itemCounts[item.name] = (itemCounts[item.name] || 0) + 1;
+            });
+
+            const resultsDiv = document.getElementById('results');
+            let html = `
+                <h3>ผลการสุ่ม 10 ครั้ง</h3>
+                <div class="stats-summary">
+                    <div class="stat-item">Sovereign ที่ได้: ${totalSovereignCount}</div>
+                    <div class="stat-item">สุ่มแล้ว: ${totalRollsUntilSovereign} ครั้ง</div>
+                    <div class="stat-item">รวมทั้งหมด: ${totalRollsOverall} ครั้ง</div>
+                </div>
+            `;
+
+            Object.keys(itemCounts).sort((a, b) => {
+                const itemA = rarities.find(r => r.name === a);
+                const itemB = rarities.find(r => r.name === b);
+                return itemA.chance - itemB.chance;
+            }).forEach(itemName => {
+                const item = rarities.find(r => r.name === itemName);
+                const count = itemCounts[itemName];
+                html += `
+                    <div class="result-item ${item.rarity}">
+                        <div class="result-header">
+                            <img src="${item.icon}" alt="${item.name}" class="result-icon" onerror="this.style.display='none'">
+                            <div>
+                                <div class="result-name">${item.name} x${count}</div>
+                                <div class="result-chance">โอกาส ${item.chance}%</div>
+                            </div>
+                        </div>
+                        <div class="result-description">${item.description}</div>
+                        <div class="result-details">${item.details.join(' • ')}</div>
+                    </div>
+                `;
+            });
+
+            resultsDiv.innerHTML = html;
+            
+            if (sovereignCount > 0) {
+                totalRollsUntilSovereign = 0;
+            }
+        }
+
+        function rollHundred() {
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = '<div class="loading">กำลังสุ่ม 100 ครั้ง กรุณารอสักครู่...</div>';
+
+            setTimeout(() => {
+                const items = [];
+                let sovereignCount = 0;
+                
+                for (let i = 0; i < 100; i++) {
+                    totalRollsUntilSovereign++;
+                    totalRollsOverall++;
+                    const item = getRandomItem();
+                    items.push(item);
+                    
+                    if (item.name === "Sovereign") {
+                        sovereignCount++;
+                        totalSovereignCount++;
+                    }
+                }
+
+                if (sovereignCount > 0) {
+                    alert(`ได้ Sovereign ${sovereignCount} ตัวใน 100 ครั้ง!`);
+                }
+
+                const itemCounts = {};
+                items.forEach(item => {
+                    itemCounts[item.name] = (itemCounts[item.name] || 0) + 1;
+                });
+
+                let html = `
+                    <h3>ผลการสุ่ม 100 ครั้ง</h3>
+                    <div class="stats-summary">
+                        <div class="stat-item">Sovereign ที่ได้: ${totalSovereignCount}</div>
+                        <div class="stat-item">สุ่มแล้ว: ${totalRollsUntilSovereign} ครั้ง</div>
+                        <div class="stat-item">รวมทั้งหมด: ${totalRollsOverall} ครั้ง</div>
+                    </div>
+                `;
+
+                Object.keys(itemCounts).sort((a, b) => {
+                    const itemA = rarities.find(r => r.name === a);
+                    const itemB = rarities.find(r => r.name === b);
+                    return itemA.chance - itemB.chance;
+                }).forEach(itemName => {
+                    const item = rarities.find(r => r.name === itemName);
+                    const count = itemCounts[itemName];
+                    html += `
+                        <div class="result-item ${item.rarity}">
+                            <div class="result-header">
+                                <img src="${item.icon}" alt="${item.name}" class="result-icon" onerror="this.style.display='none'">
+                                <div>
+                                    <div class="result-name">${item.name} x${count}</div>
+                                    <div class="result-chance">โอกาส ${item.chance}%</div>
+                                </div>
+                            </div>
+                            <div class="result-description">${item.description}</div>
+                            <div class="result-details">${item.details.join(' • ')}</div>
+                        </div>
+                    `;
+                });
+
+                resultsDiv.innerHTML = html;
+                
+                if (sovereignCount > 0) {
+                    totalRollsUntilSovereign = 0;
+                }
+            }, 500);
+        }
+
+        function rollUntilSovereign() {
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = '<div class="loading">กำลังสุ่มจนได้ Sovereign กรุณารอสักครู่...</div>';
+
+            setTimeout(() => {
+                let rolls = 0;
+                let item;
+
+                do {
+                    item = getRandomItem();
+                    rolls++;
+                } while (item.name !== "Sovereign");
+
+                resultsDiv.innerHTML = `
+                    <h3>สุ่มจนได้ Sovereign</h3>
+                    <div class="stats-summary">
+                        <div class="stat-item">จำนวนครั้งที่สุ่ม: ${rolls.toLocaleString()}</div>
+                        <div class="stat-item">โอกาสที่เกิดขึ้น: ${(100 / rolls).toFixed(6)}%</div>
+                    </div>
+                    ${displayResult(item)}
+                    <div style="text-align: center; margin-top: 15px; color: #27ae60; font-weight: 600;">
+                        ยินดีด้วย! ได้ Sovereign หลังจากสุ่ม ${rolls.toLocaleString()} ครั้ง
+                    </div>
+                `;
+            }, 1000);
+        }
+
+        function showRates() {
+            const resultsDiv = document.getElementById('results');
+            
+            const groupBy = (items, keyFn) => {
+                const map = {};
+                for (const item of items) {
+                    const key = keyFn(item);
+                    if (!map[key]) map[key] = [];
+                    map[key].push(item);
+                }
+                return map;
+            };
+
+            const grouped = groupBy(rarities, item => {
+                if (item.name.includes("Endure")) return "Endure";
+                if (item.name.includes("Horizon")) return "Horizon";
+                if (item.name.includes("Superior")) return "Superior";
+                return item.name;
+            });
+
+            let html = '<h3>อัตราการได้รับ Trait</h3>';
+
+            Object.entries(grouped).forEach(([key, traits]) => {
+                const base = traits[0];
+                html += `
+                    <div class="result-item ${base.rarity}">
+                        <div class="result-header">
+                            <img src="${base.icon}" alt="${key}" class="result-icon" onerror="this.style.display='none'">
+                            <div>
+                                <div class="result-name">${key}</div>
+                                <div class="result-chance">
+                                    ${traits.length > 1 
+                                        ? traits.map(t => `${t.name}: ${t.chance}%`).join(", ")
+                                        : `โอกาส ${base.chance}%`}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="result-description">${base.description}</div>
+                        <div class="result-details">
+                            ${traits.length > 1 
+                                ? [...new Set(traits.flatMap(t => t.details))].join(" • ") 
+                                : traits[0].details.join(" • ")
+                            }
+                        </div>
+                    </div>
+                `;
+            });
+
+            resultsDiv.innerHTML = html;
+        }
+
+        function resetSovereignCount() {
+            totalSovereignCount = 0;
+            totalRollsUntilSovereign = 0;
+            totalRollsOverall = 0;
+
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = `
+                <h3>รีเซ็ตแล้ว</h3>
+                <div style="text-align: center; margin-top: 20px; color: #27ae60; font-weight: 600;">
+                    รีเซ็ตจำนวน Sovereign และการนับครั้งเรียบร้อยแล้ว
+                </div>
+                <div class="welcome-text">กดปุ่มเพื่อเริ่มการทดลองสุ่ม Trait ใหม่</div>
+            `;
+        }
+    </script>
+    <footer style="margin-top: 50px; text-align: center; font-size: 0.95em; color: rgba(36, 33, 33, 0.8); font-weight: 400; text-shadow: 0 1px 2px rgba(0,0,0,0.3);">
+        &copy; 2025 <strong style="color: rgba(36, 33, 33,);">Test Random Trait Reroll</strong> | Powered by <span style="color: #d40000;">AnimeRange X</span><br>
+        Developed with care by <span style="color: #0400ff;">Meone</span>
+    </footer>
+</body>
+</html>
