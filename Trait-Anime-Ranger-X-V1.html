@@ -408,7 +408,7 @@
                 <h3>ผลการสุ่ม 10 ครั้ง</h3>
                 <div class="stats-summary">
                     <div class="stat-item">Sovereign ที่ได้: ${totalSovereignCount}</div>
-                    <div class="stat-item">สุ่มแล้ว: ${sovereignCount > 0 ? (rollsBeforeSovereign + (items.findIndex(item => item.name === "Sovereign") + 1)) : totalRollsUntilSovereign} ครั้ง</div>
+                    <div class="stat-item">สุ่มแล้ว: ${sovereignCount > 0 ? (rollsBeforeSovereign + (items.findIndex(item => item.name === "Sovereign") + 1)) : totalRollsUntilSovereign} ครั้งได้ Sovereign</div>
                     <div class="stat-item">รวมทั้งหมด: ${totalRollsOverall} ครั้ง</div>
                 </div>
             `;
@@ -481,7 +481,7 @@
                     <h3>ผลการสุ่ม 100 ครั้ง</h3>
                     <div class="stats-summary">
                         <div class="stat-item">Sovereign ที่ได้: ${totalSovereignCount}</div>
-                        <div class="stat-item">สุ่มแล้ว: ${sovereignCount > 0 ? (rollsBeforeSovereign + firstSovereignIndex + 1) : totalRollsUntilSovereign} ครั้ง</div>
+                        <div class="stat-item">สุ่มแล้ว: ${sovereignCount > 0 ? (rollsBeforeSovereign + firstSovereignIndex + 1) : totalRollsUntilSovereign} ครั้งได้ Sovereign</div>
                         <div class="stat-item">รวมทั้งหมด: ${totalRollsOverall} ครั้ง</div>
                     </div>
                 `;
@@ -516,6 +516,7 @@
                 }
             }, 500);
         }
+
         function rollUntilSovereign() {
             const resultsDiv = document.getElementById('results');
             resultsDiv.innerHTML = '<div class="loading">กำลังสุ่มจนได้ Sovereign กรุณารอสักครู่...</div>';
