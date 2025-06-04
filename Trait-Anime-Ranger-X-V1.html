@@ -193,10 +193,328 @@
             <button class="btn btn-primary" onclick="rollSingle()">สุ่ม 1 ครั้ง</button>
             <button class="btn btn-primary" onclick="rollTen()">สุ่ม 10 ครั้ง</button>
             <button class="btn btn-primary" onclick="rollHundred()">สุ่ม 100 ครั้ง</button>
-            <button class="btn btn-special" onclick="rollUntilSovereign()">สุ่มจนได้ SOVEREIGN</button>
+            <button class="btn btn-special" onclick="showTargetSelector()">สุ่มจนได้ที่เลือก</button>
             <button class="btn" onclick="showRates()">ดูอัตราเรท</button>
             <button class="btn btn-secondary" onclick="resetSovereignCount()">รีเซ็ตการสุ่ม</button>
         </div>
+
+        <!-- แทนที่ส่วน target-selector เดิมด้วยโค๊ดนี้ -->
+        <div class="target-selector" id="targetSelector" style="display: none; margin-bottom: 20px;">
+            <label for="traitSelect" style="display: block; margin-bottom: 10px; font-weight: 600; color: #2c3e50;">เลือก Trait ที่ต้องการ:</label>
+            
+            <!-- แก้ไขให้ dropdown และปุ่มอยู่ในบรรทัดเดียวกัน -->
+            <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                <!-- Custom Dropdown Container -->
+                <div class="custom-select-container" style="position: relative; flex: 1; min-width: 250px;">
+                    <div class="custom-select-header" onclick="toggleDropdown()" style="
+                        width: 100%; 
+                        padding: 10px; 
+                        border: 2px solid #3498db; 
+                        border-radius: 6px; 
+                        font-size: 14px; 
+                        background: white; 
+                        cursor: pointer;
+                        display: flex;
+                        align-items: center;
+                        gap: 10px;
+                        justify-content: space-between;
+                    ">
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <img id="selectedIcon" src="https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Sovereign.svg" 
+                                alt="Selected" style="width: 20px; height: 20px; object-fit: contain;">
+                            <span id="selectedText">Sovereign (0.1%)</span>
+                        </div>
+                        <span style="transform: rotate(0deg); transition: transform 0.3s ease;">▼</span>
+                    </div>
+                    
+                    <div class="custom-select-options" id="customSelectOptions" style="
+                        position: absolute;
+                        top: 100%;
+                        left: 0;
+                        right: 0;
+                        background: white;
+                        border: 2px solid #3498db;
+                        border-top: none;
+                        border-radius: 0 0 6px 6px;
+                        max-height: 300px;
+                        overflow-y: auto;
+                        z-index: 1000;
+                        display: none;
+                    ">
+                        <div class="select-option" data-value="Sovereign" data-icon="https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Sovereign.svg" onclick="selectOption(this)" style="
+                            padding: 10px;
+                            display: flex;
+                            align-items: center;
+                            gap: 10px;
+                            cursor: pointer;
+                            transition: background-color 0.2s ease;
+                        " onmouseover="this.style.backgroundColor='#f8f9fa'" onmouseout="this.style.backgroundColor='white'">
+                            <img src="https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Sovereign.svg" alt="Sovereign" style="width: 20px; height: 20px; object-fit: contain;">
+                            <span>Sovereign (0.1%)</span>
+                        </div>
+                        
+                        <div class="select-option" data-value="Duplicator" data-icon="https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Duplicator.svg" onclick="selectOption(this)" style="
+                            padding: 10px;
+                            display: flex;
+                            align-items: center;
+                            gap: 10px;
+                            cursor: pointer;
+                            transition: background-color 0.2s ease;
+                        " onmouseover="this.style.backgroundColor='#f8f9fa'" onmouseout="this.style.backgroundColor='white'">
+                            <img src="https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Duplicator.svg" alt="Duplicator" style="width: 20px; height: 20px; object-fit: contain;">
+                            <span>Duplicator (0.15%)</span>
+                        </div>
+                        
+                        <div class="select-option" data-value="Capitalist" data-icon="https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Capitalist.svg" onclick="selectOption(this)" style="
+                            padding: 10px;
+                            display: flex;
+                            align-items: center;
+                            gap: 10px;
+                            cursor: pointer;
+                            transition: background-color 0.2s ease;
+                        " onmouseover="this.style.backgroundColor='#f8f9fa'" onmouseout="this.style.backgroundColor='white'">
+                            <img src="https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Capitalist.svg" alt="Capitalist" style="width: 20px; height: 20px; object-fit: contain;">
+                            <span>Capitalist (0.25%)</span>
+                        </div>
+                        
+                        <div class="select-option" data-value="Seraph" data-icon="https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Seraph.svg" onclick="selectOption(this)" style="
+                            padding: 10px;
+                            display: flex;
+                            align-items: center;
+                            gap: 10px;
+                            cursor: pointer;
+                            transition: background-color 0.2s ease;
+                        " onmouseover="this.style.backgroundColor='#f8f9fa'" onmouseout="this.style.backgroundColor='white'">
+                            <img src="https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Seraph.svg" alt="Seraph" style="width: 20px; height: 20px; object-fit: contain;">
+                            <span>Seraph (0.5%)</span>
+                        </div>
+                        
+                        <div class="select-option" data-value="Violent" data-icon="https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Violent.svg" onclick="selectOption(this)" style="
+                            padding: 10px;
+                            display: flex;
+                            align-items: center;
+                            gap: 10px;
+                            cursor: pointer;
+                            transition: background-color 0.2s ease;
+                        " onmouseover="this.style.backgroundColor='#f8f9fa'" onmouseout="this.style.backgroundColor='white'">
+                            <img src="https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Violent.svg" alt="Violent" style="width: 20px; height: 20px; object-fit: contain;">
+                            <span>Violent (2.5%)</span>
+                        </div>
+                        
+                        <div class="select-option" data-value="Millionaire" data-icon="https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Millionaire.svg" onclick="selectOption(this)" style="
+                            padding: 10px;
+                            display: flex;
+                            align-items: center;
+                            gap: 10px;
+                            cursor: pointer;
+                            transition: background-color 0.2s ease;
+                        " onmouseover="this.style.backgroundColor='#f8f9fa'" onmouseout="this.style.backgroundColor='white'">
+                            <img src="https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Millionaire.svg" alt="Millionaire" style="width: 20px; height: 20px; object-fit: contain;">
+                            <span>Millionaire (2.5%)</span>
+                        </div>
+                        
+                        <div class="select-option" data-value="Juggernaut" data-icon="https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Juggernaut.svg" onclick="selectOption(this)" style="
+                            padding: 10px;
+                            display: flex;
+                            align-items: center;
+                            gap: 10px;
+                            cursor: pointer;
+                            transition: background-color 0.2s ease;
+                        " onmouseover="this.style.backgroundColor='#f8f9fa'" onmouseout="this.style.backgroundColor='white'">
+                            <img src="https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Juggernaut.svg" alt="Juggernaut" style="width: 20px; height: 20px; object-fit: contain;">
+                            <span>Juggernaut (2.5%)</span>
+                        </div>
+                        
+                        <div class="select-option" data-value="Blitz" data-icon="https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Blitz.svg" onclick="selectOption(this)" style="
+                            padding: 10px;
+                            display: flex;
+                            align-items: center;
+                            gap: 10px;
+                            cursor: pointer;
+                            transition: background-color 0.2s ease;
+                        " onmouseover="this.style.backgroundColor='#f8f9fa'" onmouseout="this.style.backgroundColor='white'">
+                            <img src="https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Blitz.svg" alt="Blitz" style="width: 20px; height: 20px; object-fit: contain;">
+                            <span>Blitz (3.5%)</span>
+                        </div>
+                        
+                        <div class="select-option" data-value="Jokester" data-icon="https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Jokester.svg" onclick="selectOption(this)" style="
+                            padding: 10px;
+                            display: flex;
+                            align-items: center;
+                            gap: 10px;
+                            cursor: pointer;
+                            transition: background-color 0.2s ease;
+                        " onmouseover="this.style.backgroundColor='#f8f9fa'" onmouseout="this.style.backgroundColor='white'">
+                            <img src="https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Jokester.svg" alt="Jokester" style="width: 20px; height: 20px; object-fit: contain;">
+                            <span>Jokester (5%)</span>
+                        </div>
+                        
+                        <div class="select-option" data-value="Investor" data-icon="https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Investor.svg" onclick="selectOption(this)" style="
+                            padding: 10px;
+                            display: flex;
+                            align-items: center;
+                            gap: 10px;
+                            cursor: pointer;
+                            transition: background-color 0.2s ease;
+                        " onmouseover="this.style.backgroundColor='#f8f9fa'" onmouseout="this.style.backgroundColor='white'">
+                            <img src="https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Investor.svg" alt="Investor" style="width: 20px; height: 20px; object-fit: contain;">
+                            <span>Investor (5%)</span>
+                        </div>
+                        
+                        <div class="select-option" data-value="Colossal" data-icon="https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Colossal.svg" onclick="selectOption(this)" style="
+                            padding: 10px;
+                            display: flex;
+                            align-items: center;
+                            gap: 10px;
+                            cursor: pointer;
+                            transition: background-color 0.2s ease;
+                        " onmouseover="this.style.backgroundColor='#f8f9fa'" onmouseout="this.style.backgroundColor='white'">
+                            <img src="https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Colossal.svg" alt="Colossal" style="width: 20px; height: 20px; object-fit: contain;">
+                            <span>Colossal (5%)</span>
+                        </div>
+                        
+                        <div class="select-option" data-value="Sniper" data-icon="https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Sniper.svg" onclick="selectOption(this)" style="
+                            padding: 10px;
+                            display: flex;
+                            align-items: center;
+                            gap: 10px;
+                            cursor: pointer;
+                            transition: background-color 0.2s ease;
+                        " onmouseover="this.style.backgroundColor='#f8f9fa'" onmouseout="this.style.backgroundColor='white'">
+                            <img src="https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Sniper.svg" alt="Sniper" style="width: 20px; height: 20px; object-fit: contain;">
+                            <span>Sniper (5%)</span>
+                        </div>
+                        
+                        <div class="select-option" data-value="Brute" data-icon="https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Brute.svg" onclick="selectOption(this)" style="
+                            padding: 10px;
+                            display: flex;
+                            align-items: center;
+                            gap: 10px;
+                            cursor: pointer;
+                            transition: background-color 0.2s ease;
+                        " onmouseover="this.style.backgroundColor='#f8f9fa'" onmouseout="this.style.backgroundColor='white'">
+                            <img src="https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Brute.svg" alt="Brute" style="width: 20px; height: 20px; object-fit: contain;">
+                            <span>Brute (5%)</span>
+                        </div>
+                        
+                        <div class="select-option" data-value="Endure I" data-icon="https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Endure.svg" onclick="selectOption(this)" style="
+                            padding: 10px;
+                            display: flex;
+                            align-items: center;
+                            gap: 10px;
+                            cursor: pointer;
+                            transition: background-color 0.2s ease;
+                        " onmouseover="this.style.backgroundColor='#f8f9fa'" onmouseout="this.style.backgroundColor='white'">
+                            <img src="https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Endure.svg" alt="Endure I" style="width: 20px; height: 20px; object-fit: contain;">
+                            <span>Endure I (8%)</span>
+                        </div>
+                        
+                        <div class="select-option" data-value="Endure II" data-icon="https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Endure.svg" onclick="selectOption(this)" style="
+                            padding: 10px;
+                            display: flex;
+                            align-items: center;
+                            gap: 10px;
+                            cursor: pointer;
+                            transition: background-color 0.2s ease;
+                        " onmouseover="this.style.backgroundColor='#f8f9fa'" onmouseout="this.style.backgroundColor='white'">
+                            <img src="https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Endure.svg" alt="Endure II" style="width: 20px; height: 20px; object-fit: contain;">
+                            <span>Endure II (7%)</span>
+                        </div>
+                        
+                        <div class="select-option" data-value="Endure III" data-icon="https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Endure.svg" onclick="selectOption(this)" style="
+                            padding: 10px;
+                            display: flex;
+                            align-items: center;
+                            gap: 10px;
+                            cursor: pointer;
+                            transition: background-color 0.2s ease;
+                        " onmouseover="this.style.backgroundColor='#f8f9fa'" onmouseout="this.style.backgroundColor='white'">
+                            <img src="https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Endure.svg" alt="Endure III" style="width: 20px; height: 20px; object-fit: contain;">
+                            <span>Endure III (6%)</span>
+                        </div>
+                        
+                        <div class="select-option" data-value="Horizon I" data-icon="https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Horizon.svg" onclick="selectOption(this)" style="
+                            padding: 10px;
+                            display: flex;
+                            align-items: center;
+                            gap: 10px;
+                            cursor: pointer;
+                            transition: background-color 0.2s ease;
+                        " onmouseover="this.style.backgroundColor='#f8f9fa'" onmouseout="this.style.backgroundColor='white'">
+                            <img src="https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Horizon.svg" alt="Horizon I" style="width: 20px; height: 20px; object-fit: contain;">
+                            <span>Horizon I (8%)</span>
+                        </div>
+                        
+                        <div class="select-option" data-value="Horizon II" data-icon="https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Horizon.svg" onclick="selectOption(this)" style="
+                            padding: 10px;
+                            display: flex;
+                            align-items: center;
+                            gap: 10px;
+                            cursor: pointer;
+                            transition: background-color 0.2s ease;
+                        " onmouseover="this.style.backgroundColor='#f8f9fa'" onmouseout="this.style.backgroundColor='white'">
+                            <img src="https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Horizon.svg" alt="Horizon II" style="width: 20px; height: 20px; object-fit: contain;">
+                            <span>Horizon II (7%)</span>
+                        </div>
+                        
+                        <div class="select-option" data-value="Horizon III" data-icon="https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Horizon.svg" onclick="selectOption(this)" style="
+                            padding: 10px;
+                            display: flex;
+                            align-items: center;
+                            gap: 10px;
+                            cursor: pointer;
+                            transition: background-color 0.2s ease;
+                        " onmouseover="this.style.backgroundColor='#f8f9fa'" onmouseout="this.style.backgroundColor='white'">
+                            <img src="https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Horizon.svg" alt="Horizon III" style="width: 20px; height: 20px; object-fit: contain;">
+                            <span>Horizon III (6%)</span>
+                        </div>
+                        
+                        <div class="select-option" data-value="Superior I" data-icon="https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Superior.svg" onclick="selectOption(this)" style="
+                            padding: 10px;
+                            display: flex;
+                            align-items: center;
+                            gap: 10px;
+                            cursor: pointer;
+                            transition: background-color 0.2s ease;
+                        " onmouseover="this.style.backgroundColor='#f8f9fa'" onmouseout="this.style.backgroundColor='white'">
+                            <img src="https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Superior.svg" alt="Superior I" style="width: 20px; height: 20px; object-fit: contain;">
+                            <span>Superior I (8%)</span>
+                        </div>
+                        
+                        <div class="select-option" data-value="Superior II" data-icon="https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Superior.svg" onclick="selectOption(this)" style="
+                            padding: 10px;
+                            display: flex;
+                            align-items: center;
+                            gap: 10px;
+                            cursor: pointer;
+                            transition: background-color 0.2s ease;
+                        " onmouseover="this.style.backgroundColor='#f8f9fa'" onmouseout="this.style.backgroundColor='white'">
+                            <img src="https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Superior.svg" alt="Superior II" style="width: 20px; height: 20px; object-fit: contain;">
+                            <span>Superior II (7%)</span>
+                        </div>
+                        
+                        <div class="select-option" data-value="Superior III" data-icon="https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Superior.svg" onclick="selectOption(this)" style="
+                            padding: 10px;
+                            display: flex;
+                            align-items: center;
+                            gap: 10px;
+                            cursor: pointer;
+                            transition: background-color 0.2s ease;
+                        " onmouseover="this.style.backgroundColor='#f8f9fa'" onmouseout="this.style.backgroundColor='white'">
+                            <img src="https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Superior.svg" alt="Superior III" style="width: 20px; height: 20px; object-fit: contain;">
+                            <span>Superior III (6%)</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- ปุ่มอยู่ด้านขวาของ dropdown -->
+                <div style="display: flex; gap: 10px; flex-shrink: 0;">
+                    <button class="btn btn-special" onclick="rollUntilTarget()">เริ่มสุ่ม</button>
+                    <button class="btn" onclick="hideTargetSelector()">ยกเลิก</button>
+                </div>
+            </div>
+        </div>
+
 
         <div class="results" id="results">
             <h3>ผลการสุ่ม</h3>
@@ -348,7 +666,53 @@
             `;
         }
 
+        // เพิ่มฟังก์ชันใหม่เหล่านี้ใน JavaScript section
+        let selectedTraitValue = "Sovereign"; // Default selection
+
+        function toggleDropdown() {
+            const options = document.getElementById('customSelectOptions');
+            const arrow = document.querySelector('.custom-select-header span:last-child');
+            
+            if (options.style.display === 'none' || options.style.display === '') {
+                options.style.display = 'block';
+                arrow.style.transform = 'rotate(180deg)';
+            } else {
+                options.style.display = 'none';
+                arrow.style.transform = 'rotate(0deg)';
+            }
+        }
+
+        function selectOption(element) {
+            const value = element.getAttribute('data-value');
+            const icon = element.getAttribute('data-icon');
+            const text = element.querySelector('span').textContent;
+            
+            // Update selected display
+            document.getElementById('selectedIcon').src = icon;
+            document.getElementById('selectedText').textContent = text;
+            
+            // Store selected value
+            selectedTraitValue = value;
+            
+            // Close dropdown
+            document.getElementById('customSelectOptions').style.display = 'none';
+            document.querySelector('.custom-select-header span:last-child').style.transform = 'rotate(0deg)';
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            const container = document.querySelector('.custom-select-container');
+            if (container && !container.contains(event.target)) {
+                document.getElementById('customSelectOptions').style.display = 'none';
+                document.querySelector('.custom-select-header span:last-child').style.transform = 'rotate(0deg)';
+            }
+        });
+
+        // แก้ไขฟังก์ชัน rollSingle, rollTen, rollHundred ให้ซ่อน target selector
         function rollSingle() {
+            // ซ่อน target selector เมื่อใช้ฟังก์ชันอื่น
+            hideTargetSelector();
+            
             const item = getRandomItem();
             totalRollsUntilSovereign++;
             totalRollsOverall++;
@@ -378,6 +742,9 @@
         }
 
         function rollTen() {
+            // ซ่อน target selector เมื่อใช้ฟังก์ชันอื่น
+            hideTargetSelector();
+            
             const items = [];
             let sovereignCount = 0;
             let rollsBeforeSovereign = totalRollsUntilSovereign; // เก็บค่าก่อนเริ่มสุ่ม
@@ -444,6 +811,9 @@
         }
 
         function rollHundred() {
+            // ซ่อน target selector เมื่อใช้ฟังก์ชันอื่น
+            hideTargetSelector();
+            
             const resultsDiv = document.getElementById('results');
             resultsDiv.innerHTML = '<div class="loading">กำลังสุ่ม 100 ครั้ง กรุณารอสักครู่...</div>';
 
@@ -517,9 +887,20 @@
             }, 500);
         }
 
-        function rollUntilSovereign() {
+        function showTargetSelector() {
+            document.getElementById('targetSelector').style.display = 'block';
+        }
+
+        function hideTargetSelector() {
+            document.getElementById('targetSelector').style.display = 'none';
+        }
+
+        // อัพเดทฟังก์ชัน rollUntilTarget ให้ใช้ selectedTraitValue แทน
+        function rollUntilTarget() {
+            const selectedTrait = selectedTraitValue; // ใช้ตัวแปรใหม่
             const resultsDiv = document.getElementById('results');
-            resultsDiv.innerHTML = '<div class="loading">กำลังสุ่มจนได้ Sovereign กรุณารอสักครู่...</div>';
+            
+            resultsDiv.innerHTML = `<div class="loading">กำลังสุ่มจนได้ ${selectedTrait} กรุณารอสักครู่...</div>`;
 
             setTimeout(() => {
                 let rolls = 0;
@@ -528,23 +909,26 @@
                 do {
                     item = getRandomItem();
                     rolls++;
-                } while (item.name !== "Sovereign");
+                } while (item.name !== selectedTrait);
 
                 resultsDiv.innerHTML = `
-                    <h3>สุ่มจนได้ Sovereign</h3>
+                    <h3>สุ่มจนได้ ${selectedTrait}</h3>
                     <div class="stats-summary">
                         <div class="stat-item">จำนวนครั้งที่สุ่ม: ${rolls.toLocaleString()}</div>
                         <div class="stat-item">โอกาสที่เกิดขึ้น: ${(100 / rolls).toFixed(6)}%</div>
                     </div>
                     ${displayResult(item)}
                     <div style="text-align: center; margin-top: 15px; color: #27ae60; font-weight: 600;">
-                        ยินดีด้วย! ได้ Sovereign หลังจากสุ่ม ${rolls.toLocaleString()} ครั้ง
+                        ยินดีด้วย! ได้ ${selectedTrait} หลังจากสุ่ม ${rolls.toLocaleString()} ครั้ง
                     </div>
                 `;
             }, 1000);
         }
 
         function showRates() {
+            // ซ่อน target selector เมื่อใช้ฟังก์ชันอื่น
+            hideTargetSelector();
+            
             const resultsDiv = document.getElementById('results');
             
             const groupBy = (items, keyFn) => {
@@ -596,6 +980,9 @@
         }
 
         function resetSovereignCount() {
+            // ซ่อน target selector เมื่อใช้ฟังก์ชันอื่น
+            hideTargetSelector();
+            
             totalSovereignCount = 0;
             totalRollsUntilSovereign = 0;
             totalRollsOverall = 0;
