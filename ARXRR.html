@@ -1,0 +1,2367 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AnimeRanger X: Trait Gacha Simulator</title>
+    <link rel="icon" href="https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Sovereign.svg" type="image/svg+xml">
+    <style>
+         :root {
+            --main-glow: #00eaff;
+            --main-gradient: linear-gradient(90deg, #00eaff 0%, #6f00ff 100%);
+            --main-bg: linear-gradient(135deg, #1a0036 0%, #0a0a23 60%, #2d0036 100%);
+            --main-shadow: 0 0 32px var(--main-glow), 0 0 64px #fff2;
+            --main-radius: 22px;
+        }
+        
+        [data-theme="cyberpunk"] {
+            --main-glow: #ff00c8;
+            --main-gradient: linear-gradient(90deg, #ff00c8 0%, #00eaff 100%);
+            --main-bg: linear-gradient(135deg, #0a0023 0%, #1a0036 60%, #ff00c8 100%);
+        }
+        
+        [data-theme="neon"] {
+            --main-glow: #39ff14;
+            --main-gradient: linear-gradient(90deg, #39ff14 0%, #00eaff 100%);
+            --main-bg: linear-gradient(135deg, #0a0a23 0%, #1a0036 60%, #39ff14 100%);
+        }
+        
+        [data-theme="dark"] {
+            --main-glow: #00eaff;
+            --main-gradient: linear-gradient(90deg, #00eaff 0%, #6f00ff 100%);
+            --main-bg: linear-gradient(135deg, #1a0036 0%, #0a0a23 60%, #2d0036 100%);
+        }
+        
+        html,
+        body {
+            height: 100%;
+        }
+        
+        body {
+            min-height: 100vh;
+            background: var(--main-bg);
+            overflow-x: hidden;
+            font-family: 'Orbitron', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #e0e6ff;
+            position: relative;
+        }
+        
+        #star-bg,
+        #parallax-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 0;
+            pointer-events: none;
+        }
+        
+        #parallax-bg {
+            background: radial-gradient(circle at 60% 40%, #6f00ff44 0%, #00eaff11 60%, transparent 100%);
+            opacity: 0.7;
+            animation: parallax-move 12s linear infinite alternate;
+        }
+        
+        @keyframes parallax-move {
+            0% {
+                background-position: 60% 40%;
+            }
+            100% {
+                background-position: 40% 60%;
+            }
+        }
+        
+        .logo-text {
+            font-size: 3.2em;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 32px;
+            margin-bottom: 32px;
+            letter-spacing: 2.5px;
+            background: var(--main-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 8px var(--main-glow), 0 0 16px #fff2;
+            animation: logo-glow 2.5s infinite alternate;
+        }
+        
+        @keyframes logo-glow {
+            0% {
+                text-shadow: 0 0 8px var(--main-glow), 0 0 16px #fff2;
+            }
+            100% {
+                text-shadow: 0 0 24px #fff, 0 0 48px var(--main-glow);
+            }
+        }
+        
+        .holo-panel {
+            background: rgba(30, 30, 60, 0.85);
+            border-radius: var(--main-radius);
+            border: 2.5px solid var(--main-glow);
+            box-shadow: var(--main-shadow);
+            backdrop-filter: blur(10px);
+            padding: 36px 28px 28px 28px;
+            margin: 0 auto 32px auto;
+            max-width: 950px;
+            z-index: 2;
+            position: relative;
+            animation: panel-fadein 1.2s;
+        }
+        
+        @keyframes panel-fadein {
+            from {
+                opacity: 0;
+                transform: scale(0.97);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        .arcade-panel {
+            display: flex;
+            justify-content: center;
+            gap: 22px;
+            flex-wrap: wrap;
+            margin-bottom: 32px;
+        }
+        
+        .arcade-btn {
+            background: var(--main-gradient);
+            color: #fff;
+            border: none;
+            border-radius: 20px;
+            box-shadow: 0 0 32px var(--main-glow), 0 0 64px #fff2;
+            font-size: 1.35em;
+            padding: 20px 44px;
+            margin: 12px 0;
+            cursor: pointer;
+            transition: transform 0.14s, box-shadow 0.22s, background 0.22s;
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 1.2px;
+            display: block;
+            min-width: 200px;
+            font-weight: 700;
+            outline: none;
+            position: relative;
+            overflow: hidden;
+            /* เพิ่มเติม glow effect */
+            box-shadow: 0 0 32px var(--main-glow), 0 0 64px #fff2;
+        }
+        
+        .arcade-btn:before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle, #fff3 0%, transparent 80%);
+            opacity: 0.2;
+            pointer-events: none;
+        }
+        
+        .arcade-btn:active,
+        .arcade-btn:focus {
+            transform: scale(0.97);
+            box-shadow: 0 0 32px #fff, 0 0 48px var(--main-glow)88;
+        }
+        
+        .arcade-btn:hover,
+        .arcade-btn:focus {
+            background: var(--main-gradient);
+            box-shadow: 0 0 48px #fff, 0 0 96px var(--main-glow);
+        }
+        
+        .arcade-btn.special {
+            background: linear-gradient(90deg, #00eaff 0%, #00ffb7 100%);
+            color: #232323;
+            box-shadow: 0 0 32px var(--main-glow), 0 0 64px #fff2;
+        }
+        
+        .arcade-btn.special:hover {
+            background: var(--main-gradient);
+            color: #232323;
+            box-shadow: 0 0 48px var(--main-glow), 0 0 64px #00ffb788;
+        }
+        
+        .arcade-btn.secondary {
+            background: linear-gradient(90deg, #232323 0%, #00eaff 100%);
+            color: #00eaff;
+            box-shadow: 0 0 32px var(--main-glow), 0 0 64px #fff2;
+        }
+        
+        .arcade-btn.secondary:hover {
+            background: var(--main-gradient);
+            color: #fff;
+            box-shadow: 0 0 32px #fff, 0 0 48px var(--main-glow);
+        }
+        /* เพิ่มเติม: ปรับ dropdown, card, และ responsive ให้อลังการขึ้น */
+        
+        .custom-dropdown,
+        .dropdown-options {
+            border-radius: 14px;
+            box-shadow: 0 0 18px var(--main-glow)55;
+            border: 2.5px solid var(--main-glow);
+        }
+        
+        .dropdown-option:hover {
+            background: #1a0036cc;
+            color: #fff;
+            box-shadow: 0 0 12px #fff2;
+        }
+        
+        .trait-card,
+        .icon-card,
+        .flip-card {
+            border-radius: 18px !important;
+            box-shadow: 0 0 32px var(--main-glow)44, 0 0 64px #fff1;
+            border-width: 2.5px !important;
+        }
+        
+        .trait-card {
+            background: linear-gradient(135deg, #1a0036cc 60%, #2d0036ee 100%);
+            border: 2.5px solid var(--main-glow);
+            animation: trait-fadein 0.7s;
+        }
+        
+        @media (max-width: 900px) {
+            .holo-panel {
+                max-width: 99vw;
+                padding: 12px 2vw;
+            }
+            .logo-text {
+                font-size: 2.1em;
+            }
+            .arcade-btn {
+                min-width: 120px;
+                font-size: 1em;
+                padding: 12px 10vw;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .logo-text {
+                font-size: 1.3em;
+            }
+            .holo-panel {
+                padding: 6px 1vw;
+            }
+            .arcade-panel {
+                gap: 6px;
+            }
+        }
+        /* Loading Animation */
+        
+        .loading {
+            text-align: center;
+            color: #7f8c8d;
+            font-style: italic;
+            padding: 30px;
+            font-size: 1.3em;
+            position: relative;
+        }
+        
+        .loading:after {
+            content: '';
+            display: inline-block;
+            width: 32px;
+            height: 32px;
+            border: 4px solid #00eaff44;
+            border-top: 4px solid #00eaff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-left: 12px;
+            vertical-align: middle;
+        }
+        
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+        
+        .logo-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 32px;
+            margin-bottom: 24px;
+        }
+        
+        .glow-logo {
+            width: 160px;
+            filter: drop-shadow(0 0 32px #a259ff) drop-shadow(0 0 64px #00eaff);
+            animation: electric-pulse 2.2s infinite alternate;
+        }
+        
+        .dropdown-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin: 0 auto 24px auto;
+            justify-content: center;
+        }
+        
+        .custom-dropdown {
+            position: relative;
+            min-width: 260px;
+            max-width: 320px;
+            width: 100%;
+            background: rgba(20, 20, 40, 0.85);
+            border: 2px solid #00eaff;
+            border-radius: 10px;
+            box-shadow: 0 0 16px #00eaff;
+            cursor: pointer;
+            padding: 12px 18px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.1em;
+            color: #fff;
+            user-select: none;
+        }
+        
+        .custom-dropdown .icon {
+            width: 28px;
+            height: 28px;
+            object-fit: contain;
+        }
+        
+        .dropdown-arrow {
+            margin-left: auto;
+            font-size: 1.2em;
+            color: #00eaff;
+            transition: transform 0.3s;
+        }
+        
+        .dropdown-options {
+            display: none;
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 110%;
+            background: rgba(20, 20, 40, 0.98);
+            border: 2px solid #00eaff;
+            border-radius: 0 0 10px 10px;
+            box-shadow: 0 0 24px #00eaff;
+            z-index: 10;
+            max-height: 320px;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+        
+        .dropdown-options.active {
+            display: block;
+            animation: dropdown-fade 0.3s;
+        }
+        
+        @keyframes dropdown-fade {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .dropdown-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 18px;
+            cursor: pointer;
+            transition: background 0.2s;
+            font-size: 1em;
+            width: 100%;
+            box-sizing: border-box;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .dropdown-option:hover {
+            background: #1a0036;
+        }
+        
+        .dropdown-option .icon {
+            width: 28px;
+            height: 28px;
+            object-fit: contain;
+        }
+        
+        .dropdown-option span {
+            color: #fff;
+            font-size: 1em;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 200px;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        
+        .results-panel {
+            margin: 0 auto;
+            margin-top: 16px;
+            min-height: 320px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        
+        .results-panel .icon-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            max-width: 480px;
+            margin: 0 auto;
+            box-sizing: border-box;
+        }
+        
+        @media (max-width: 600px) {
+            .results-panel .icon-list {
+                max-width: 99vw;
+                gap: 4px;
+                padding: 0 2vw;
+            }
+            .icon-card {
+                width: 36px !important;
+                height: 36px !important;
+                margin: 1px !important;
+            }
+            .icon-card img {
+                width: 28px !important;
+                height: 28px !important;
+            }
+            .icon-card-wrapper {
+                margin-bottom: 10px;
+            }
+        }
+        
+        .flip-card {
+            background: transparent;
+            width: 260px;
+            height: 360px;
+            perspective: 1200px;
+            margin: 0 auto 24px auto;
+        }
+        
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.7s cubic-bezier(.4, 2, .6, 1);
+            transform-style: preserve-3d;
+        }
+        
+        .flip-card.flipped .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+        
+        .flip-card-front,
+        .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 18px;
+            box-shadow: 0 0 24px 6px var(--rarity-glow);
+        }
+        
+        .flip-card-front {
+            background: rgba(30, 30, 40, 0.8);
+            border: 2px solid var(--rarity-glow);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .flip-card-back {
+            background: linear-gradient(135deg, var(--rarity-glow) 0%, #222 100%);
+            color: #fff;
+            transform: rotateY(180deg);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .rarity-rare {
+            --rarity-glow: #00ffb7;
+            border-color: #00ffb7 !important;
+            box-shadow: 0 0 24px #00ffb7, 0 0 48px #00ffb7aa;
+        }
+        
+        .rarity-epic {
+            --rarity-glow: #00eaff;
+            border-color: #00eaff !important;
+            box-shadow: 0 0 24px #00eaff, 0 0 48px #00eaffaa;
+        }
+        
+        .rarity-legendary {
+            --rarity-glow: #a259ff;
+            border-color: #a259ff !important;
+            box-shadow: 0 0 24px #a259ff, 0 0 48px #a259ffaa;
+        }
+        
+        .rarity-mythic {
+            --rarity-glow: #ffb300;
+            border-color: #ffb300 !important;
+            box-shadow: 0 0 24px #ffb300, 0 0 48px #ffb300aa;
+        }
+        
+        .rarity-exotic {
+            --rarity-glow: #ff00c8;
+            border-color: #ff00c8 !important;
+            box-shadow: 0 0 24px #ff00c8, 0 0 48px #ff00c8aa;
+        }
+        
+        .rarity-sovereign {
+            --rarity-glow: #ff0059;
+            border-color: #ff0059 !important;
+            box-shadow: 0 0 32px #ff0059, 0 0 64px #fff;
+            animation: shiny-glow 1.2s infinite alternate, trait-fadein 0.7s;
+        }
+        
+        .rarity-label {
+            font-size: 1.1em;
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin-top: 8px;
+            text-shadow: 0 0 8px var(--rarity-glow), 0 0 16px #fff2;
+        }
+        
+        .result-icon {
+            width: 64px;
+            height: 64px;
+            margin-bottom: 12px;
+            filter: drop-shadow(0 0 12px var(--rarity-glow));
+        }
+        
+        .result-name {
+            font-size: 1.3em;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 6px;
+            text-shadow: 0 0 8px var(--rarity-glow);
+        }
+        
+        .result-chance {
+            color: #b3b3ff;
+            font-size: 1em;
+            margin-bottom: 8px;
+        }
+        
+        .result-description {
+            color: #e0e6ff;
+            font-size: 1em;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+        
+        .result-details {
+            color: #a0eaff;
+            font-size: 0.95em;
+            text-align: center;
+        }
+        
+        .stats-summary {
+            background: rgba(0, 234, 255, 0.08);
+            border: 1px solid #00eaff;
+            border-radius: 8px;
+            padding: 10px 0;
+            margin: 18px 0 10px 0;
+            text-align: center;
+            box-shadow: 0 0 12px #00eaff44;
+        }
+        
+        .stat-item {
+            display: inline-block;
+            margin: 5px 10px;
+            padding: 8px 12px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid #00eaff;
+            border-radius: 4px;
+            font-weight: 500;
+            color: #00eaff;
+        }
+        
+        .lootbox-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(10, 10, 30, 0.92);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: lootbox-fadein 0.4s;
+        }
+        
+        @keyframes lootbox-fadein {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        
+        .lootbox {
+            width: 180px;
+            height: 180px;
+            background: linear-gradient(135deg, #6f00ff 0%, #00eaff 100%);
+            border-radius: 24px;
+            box-shadow: 0 0 64px #00eaff, 0 0 128px #6f00ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            animation: lootbox-shake 0.7s infinite alternate;
+        }
+        
+        @keyframes lootbox-shake {
+            0% {
+                transform: rotate(-2deg) scale(1);
+            }
+            100% {
+                transform: rotate(2deg) scale(1.04);
+            }
+        }
+        
+        .lootbox-light {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 220px;
+            height: 220px;
+            background: radial-gradient(circle, #fff 0%, #00eaff00 80%);
+            opacity: 0.7;
+            border-radius: 50%;
+            transform: translate(-50%, -50%) scale(0.7);
+            filter: blur(12px);
+            pointer-events: none;
+        }
+        
+        .loading {
+            text-align: center;
+            color: #7f8c8d;
+            font-style: italic;
+            padding: 30px;
+        }
+        
+        .welcome-text {
+            text-align: center;
+            color: #7f8c8d;
+            font-style: italic;
+            padding: 20px;
+        }
+        
+        @media (max-width: 768px) {
+            .holo-panel {
+                padding: 12px 4px;
+            }
+            .logo-container {
+                margin-top: 16px;
+            }
+            .arcade-panel {
+                gap: 8px;
+            }
+            .flip-card {
+                width: 180px;
+                height: 240px;
+            }
+        }
+        
+        .dropdown-options {
+            z-index: 100;
+        }
+        
+        #gacha-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(10, 10, 30, 0.92);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .gacha-rolling {
+            animation: gacha-roll 0.05s linear infinite;
+        }
+        
+        @keyframes gacha-roll {
+            0% {
+                filter: brightness(1);
+            }
+            50% {
+                filter: brightness(1.5);
+            }
+            100% {
+                filter: brightness(1);
+            }
+        }
+        
+        .gacha-vibrate {
+            animation: gacha-vibrate 0.3s linear 0s 3;
+        }
+        
+        @keyframes gacha-vibrate {
+            0% {
+                transform: translate(0, 0);
+            }
+            20% {
+                transform: translate(-5px, 2px);
+            }
+            40% {
+                transform: translate(5px, -2px);
+            }
+            60% {
+                transform: translate(-5px, 2px);
+            }
+            80% {
+                transform: translate(5px, -2px);
+            }
+            100% {
+                transform: translate(0, 0);
+            }
+        }
+        
+        .gacha-explode {
+            animation: gacha-explode 0.5s forwards;
+        }
+        
+        @keyframes gacha-explode {
+            0% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(2);
+            }
+        }
+        
+        .gacha-blink {
+            animation: gacha-blink 0.5s step-end infinite;
+        }
+        
+        @keyframes gacha-blink {
+            0%,
+            100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0;
+            }
+        }
+        
+        .gacha-highlight {
+            box-shadow: 0 0 32px 8px #ff0059, 0 0 64px 16px #fff;
+            border: 3px solid #ff0059;
+        }
+        
+        .flip-card.mini {
+            width: 80px !important;
+            height: 120px !important;
+        }
+        
+        @media (max-width: 768px) {
+            .flip-card.mini {
+                width: 48px !important;
+                height: 72px !important;
+            }
+        }
+        
+        .icon-card {
+            width: 56px;
+            height: 56px;
+            background: rgba(30, 30, 60, 0.7);
+            border-radius: 12px;
+            margin: 2px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 8px #00eaff44;
+            border: 2px solid transparent;
+            transition: border 0.2s, box-shadow 0.2s;
+            position: relative;
+            flex-direction: column;
+        }
+        
+        .icon-card .icon-count {
+            position: absolute;
+            left: 50%;
+            bottom: -18px;
+            transform: translateX(-50%);
+            color: #fff;
+            font-size: 1em;
+            font-weight: 600;
+            text-shadow: 0 0 6px #00eaff, 0 0 12px #232323;
+            background: none;
+            pointer-events: none;
+        }
+        
+        .icon-card-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 18px;
+        }
+        
+        .icon-card.gacha-highlight {
+            border: 2px solid #ff0059;
+            box-shadow: 0 0 16px #ff0059, 0 0 32px #fff;
+        }
+        
+        .icon-card.gacha-blink {
+            animation: gacha-blink 0.5s step-end infinite;
+        }
+        
+        .icon-card.gacha-vibrate {
+            animation: gacha-vibrate 0.3s linear 0s 3;
+        }
+        
+        .icon-card.gacha-explode {
+            animation: gacha-explode 0.5s forwards;
+        }
+        
+        .shiny-details {
+            background: linear-gradient(90deg, #ff0059 0%, #a259ff 100%);
+            color: #fff;
+            border-radius: 12px;
+            padding: 18px 24px;
+            margin: 18px auto 0 auto;
+            max-width: 420px;
+            box-shadow: 0 0 24px #ff0059, 0 0 48px #a259ff;
+            font-size: 1.15em;
+            animation: shiny-glow 1.2s infinite alternate;
+            text-align: center;
+            letter-spacing: 1px;
+        }
+        
+        @keyframes shiny-glow {
+            0% {
+                box-shadow: 0 0 24px #ff0059, 0 0 48px #a259ff;
+            }
+            100% {
+                box-shadow: 0 0 48px #fff, 0 0 96px #ff0059;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .icon-card-wrapper {
+                margin-bottom: 4px !important;
+                /* ลดระยะห่าง */
+            }
+            .icon-card {
+                width: 32px !important;
+                height: 32px !important;
+                margin: 1px !important;
+            }
+            .icon-card img {
+                width: 24px !important;
+                height: 24px !important;
+            }
+            .results-panel>div,
+            #gacha-modal-content>div {
+                max-width: 99vw;
+                gap: 2px !important;
+                flex-wrap: wrap !important;
+                justify-content: center !important;
+                overflow-x: auto;
+            }
+        }
+        
+        .trait-details-box {
+            background: rgba(30, 30, 60, 0.85);
+            border: 2px solid #00eaff;
+            border-radius: 16px;
+            box-shadow: 0 0 24px #00eaff44;
+            padding: 24px 18px;
+            margin: 18px auto 0 auto;
+            max-width: 400px;
+            text-align: center;
+            animation: trait-fadein 0.7s;
+        }
+        
+        @keyframes trait-fadein {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        .trait-details-box.shiny-effect {
+            border: 2.5px solid #ff0059;
+            box-shadow: 0 0 32px #ff0059, 0 0 64px #fff;
+            animation: shiny-glow 1.2s infinite alternate, trait-fadein 0.7s;
+        }
+        
+        .trait-details-box {
+            /* reset box-shadow for override */
+            box-shadow: 0 0 24px #00eaff44;
+        }
+        
+        .trait-details-box.rarity-rare,
+        .trait-details-box.rarity-epic,
+        .trait-details-box.rarity-legendary,
+        .trait-details-box.rarity-Mythic,
+        .trait-details-box.rarity-Exotic,
+        .trait-details-box.rarity-sovereign {
+            /* ใช้ box-shadow ของแต่ละแรร์ */
+        }
+        
+        .icon-card,
+        .flip-card {
+            border-width: 2.5px;
+        }
+        
+        .icon-card.rarity-rare,
+        .icon-card.rarity-epic,
+        .icon-card.rarity-legendary,
+        .icon-card.rarity-Mythic,
+        .icon-card.rarity-Exotic,
+        .icon-card.rarity-sovereign,
+        .flip-card.rarity-rare,
+        .flip-card.rarity-epic,
+        .flip-card.rarity-legendary,
+        .flip-card.rarity-Mythic,
+        .flip-card.rarity-Exotic,
+        .flip-card.rarity-sovereign {
+            /* ใช้ box-shadow ของแต่ละแรร์ */
+        }
+        
+        .trait-card {
+            background: linear-gradient(135deg, rgba(30, 30, 60, 0.98) 60%, rgba(0, 0, 0, 0.98) 100%);
+            border-radius: 22px;
+            border: 2.5px solid var(--rarity-glow, #00eaff);
+            box-shadow: 0 0 48px 12px var(--rarity-glow, #00eaff), 0 0 96px 24px #fff2;
+            padding: 32px 24px 24px 24px;
+            max-width: 320px;
+            margin: 0 auto;
+            text-align: center;
+            color: #fff;
+            animation: trait-fadein 0.7s;
+            position: relative;
+            opacity: 1 !important;
+            /* บังคับให้ไม่โปร่งใส */
+            transition: box-shadow 0.2s, background 0.2s;
+        }
+        
+        .trait-card-icon {
+            width: 64px;
+            height: 64px;
+            margin-bottom: 12px;
+            filter: drop-shadow(0 0 16px var(--rarity-glow, #00eaff));
+        }
+        
+        .trait-card-title {
+            font-size: 1.4em;
+            font-weight: 700;
+            margin-bottom: 4px;
+            letter-spacing: 1px;
+            text-shadow: 0 0 8px var(--rarity-glow, #00eaff);
+        }
+        
+        .trait-card-rarity {
+            font-size: 1.1em;
+            font-weight: 600;
+            margin-bottom: 2px;
+            color: var(--rarity-glow, #00eaff);
+            letter-spacing: 2px;
+        }
+        
+        .trait-card-chance {
+            color: #b3b3ff;
+            font-size: 1em;
+            margin-bottom: 8px;
+        }
+        
+        .trait-card-desc {
+            color: #e0e6ff;
+            font-size: 1em;
+            margin-bottom: 8px;
+        }
+        
+        .trait-card-details {
+            color: #a0eaff;
+            font-size: 0.98em;
+            margin-bottom: 0;
+        }
+        
+        .trait-card.rolling {
+            box-shadow: 0 0 64px 24px var(--rarity-glow, #00eaff), 0 0 128px 48px #fff4;
+            filter: brightness(1.15) saturate(1.2);
+            animation: rolling-glow 0.7s alternate infinite, trait-fadein 0.7s;
+        }
+        
+        @keyframes rolling-glow {
+            0% {
+                box-shadow: 0 0 32px 8px var(--rarity-glow, #00eaff), 0 0 64px 16px #fff1;
+            }
+            100% {
+                box-shadow: 0 0 64px 24px var(--rarity-glow, #00eaff), 0 0 128px 48px #fff4;
+            }
+        }
+        /* Card 3D/shine effect */
+        
+        .trait-card,
+        .flip-card,
+        .icon-card {
+            perspective: 900px;
+            position: relative;
+            overflow: visible;
+        }
+        
+        .trait-card .shine {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            background: linear-gradient(120deg, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0.01) 80%);
+            opacity: 0.7;
+            border-radius: 18px;
+            mix-blend-mode: lighten;
+            transition: opacity 0.3s;
+        }
+        
+        .trait-card:hover .shine {
+            opacity: 1;
+        }
+        /* Particle canvas */
+        
+        #particle-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 1;
+            pointer-events: none;
+        }
+        /* ... (คง style เดิมไว้) ... */
+        
+        .theme-switcher {
+            position: fixed;
+            top: 18px;
+            right: 18px;
+            z-index: 10000;
+            display: flex;
+            gap: 10px;
+        }
+        
+        .theme-btn {
+            background: var(--main-gradient);
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            width: 44px;
+            height: 44px;
+            box-shadow: 0 0 12px var(--main-glow)99;
+            cursor: pointer;
+            font-size: 1.2em;
+            transition: box-shadow 0.2s, transform 0.1s;
+            outline: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .theme-btn:active {
+            transform: scale(0.93);
+            box-shadow: 0 0 24px #fff;
+        }
+        /* Ripple effect for buttons */
+        
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            transform: scale(0);
+            animation: ripple 0.6s linear;
+            background: rgba(255, 255, 255, 0.5);
+            pointer-events: none;
+            z-index: 2;
+        }
+        
+        @keyframes ripple {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+        /* ... (คง style เดิมไว้) ... */
+        
+        #aurora-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 1;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        
+        .aurora {
+            position: absolute;
+            width: 120vw;
+            height: 60vh;
+            left: -10vw;
+            top: 10vh;
+            background: linear-gradient(120deg, #00eaff88 0%, #ff00c888 60%, #39ff1488 100%);
+            filter: blur(60px) brightness(1.2) saturate(1.5);
+            opacity: 0.55;
+            animation: aurora-flow 12s ease-in-out infinite alternate;
+            transform: rotate(-8deg);
+        }
+        
+        @keyframes aurora-flow {
+            0% {
+                left: -10vw;
+                top: 10vh;
+                opacity: 0.45;
+            }
+            50% {
+                left: 0vw;
+                top: 18vh;
+                opacity: 0.7;
+            }
+            100% {
+                left: -5vw;
+                top: 12vh;
+                opacity: 0.55;
+            }
+        }
+        
+        .floating-neon {
+            position: fixed;
+            left: 50%;
+            top: 40%;
+            transform: translate(-50%, -50%) scale(1);
+            font-size: 2.8em;
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 0 0 24px #00eaff, 0 0 48px #ff00c8, 0 0 64px #fff;
+            background: linear-gradient(90deg, #ff00c8 0%, #00eaff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 9999;
+            animation: neon-float 1.8s cubic-bezier(.4, 2, .6, 1) forwards;
+        }
+        
+        @keyframes neon-float {
+            0% {
+                opacity: 0;
+                transform: translate(-50%, -60%) scale(0.7);
+            }
+            20% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1.1);
+            }
+            60% {
+                opacity: 1;
+                transform: translate(-50%, -52%) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(-50%, -70%) scale(1.2);
+            }
+        }
+        
+        .gacha-burst {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 220px;
+            height: 220px;
+            pointer-events: none;
+            z-index: 9999;
+            animation: burst-anim 0.8s cubic-bezier(.4, 2, .6, 1) forwards;
+        }
+        
+        @keyframes burst-anim {
+            0% {
+                opacity: 0.7;
+                transform: translate(-50%, -50%) scale(0.5) rotate(0deg);
+            }
+            60% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1.2) rotate(180deg);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(1.7) rotate(360deg);
+            }
+        }
+        
+        .gacha-burst svg {
+            width: 100%;
+            height: 100%;
+            filter: drop-shadow(0 0 32px #fff) drop-shadow(0 0 64px #ff00c8);
+        }
+        
+        @media (max-width: 600px) {
+            .dropdown-container {
+                flex-direction: column !important;
+                align-items: stretch !important;
+                gap: 10px !important;
+                width: 100% !important;
+                max-width: 99vw !important;
+                box-sizing: border-box;
+                margin: 0 auto 12px auto !important;
+            }
+            .custom-dropdown {
+                width: 100% !important;
+                min-width: unset !important;
+                max-width: 99vw !important;
+                box-sizing: border-box;
+                margin: 0 auto !important;
+                font-size: 1em !important;
+            }
+            .dropdown-options {
+                left: 0 !important;
+                right: 0 !important;
+                min-width: unset !important;
+                max-width: 99vw !important;
+                width: 100% !important;
+                box-sizing: border-box;
+            }
+            .arcade-btn.special,
+            .arcade-btn.secondary {
+                width: 100% !important;
+                min-width: unset !important;
+                box-sizing: border-box;
+                margin: 0 auto !important;
+                display: block !important;
+                text-align: center !important;
+                font-size: 1em !important;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .theme-switcher {
+                top: 8px !important;
+                right: 8px !important;
+                gap: 4px !important;
+                z-index: 10000;
+            }
+            .theme-btn {
+                width: 36px !important;
+                height: 36px !important;
+                font-size: 1em !important;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .holo-panel {
+                overflow-x: auto !important;
+            }
+        }
+        
+        .icon-count {
+            padding: 0 8px;
+            border-radius: 8px;
+            font-weight: bold;
+            margin-top: 2px;
+            font-size: 1em;
+            background: rgba(20, 20, 40, 0.85);
+            /* default shadow */
+            box-shadow: 0 0 8px #00eaff44;
+            border: 1.5px solid transparent;
+            display: inline-block;
+        }
+        
+        .icon-count.rarity-rare {
+            color: #00ffb7;
+            border-color: #00ffb7;
+            box-shadow: 0 0 12px #00ffb7, 0 0 24px #00ffb7aa;
+        }
+        
+        .icon-count.rarity-epic {
+            color: #00eaff;
+            border-color: #00eaff;
+            box-shadow: 0 0 12px #00eaff, 0 0 24px #00eaffaa;
+        }
+        
+        .icon-count.rarity-legendary {
+            color: #a259ff;
+            border-color: #a259ff;
+            box-shadow: 0 0 12px #a259ff, 0 0 24px #a259ffaa;
+        }
+        
+        .icon-count.rarity-mythic {
+            color: #ffb300;
+            border-color: #ffb300;
+            box-shadow: 0 0 12px #ffb300, 0 0 24px #ffb300aa;
+        }
+        
+        .icon-count.rarity-exotic {
+            color: #ff00c8;
+            border-color: #ff00c8;
+            box-shadow: 0 0 12px #ff00c8, 0 0 24px #ff00c8aa;
+        }
+        
+        .icon-count.rarity-sovereign {
+            color: #ff0059;
+            border-color: #ff0059;
+            box-shadow: 0 0 16px #ff0059, 0 0 32px #fff;
+            animation: shiny-glow 1.2s infinite alternate;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="theme-switcher">
+        <button class="theme-btn" title="Dark" onclick="setTheme('dark')">🌑</button>
+        <button class="theme-btn" title="Neon" onclick="setTheme('neon')">🟢</button>
+        <button class="theme-btn" title="Cyberpunk" onclick="setTheme('cyberpunk')">💜</button>
+    </div>
+    <canvas id="particle-bg"></canvas>
+    <div id="parallax-bg"></div>
+    <canvas id="star-bg"></canvas>
+    <div id="aurora-bg">
+        <div class="aurora"></div>
+    </div>
+    <div class="logo-text">AnimeRanger X Trait Gacha Simulator</div>
+    <div class="holo-panel">
+        <div class="arcade-panel">
+            <button class="arcade-btn" onclick="rollSingle()">สุ่ม 1 ครั้ง</button>
+            <button class="arcade-btn" onclick="rollTen()">สุ่ม 10 ครั้ง</button>
+            <button class="arcade-btn" onclick="rollHundred()">สุ่ม 100 ครั้ง</button>
+            <button class="arcade-btn special" onclick="showTargetSelector()">สุ่มจนได้ที่เลือก</button>
+            <button class="arcade-btn" onclick="showRates()">ดูอัตราเรท</button>
+            <button class="arcade-btn secondary" onclick="resetSovereignCount()">รีเซ็ตการสุ่ม</button>
+        </div>
+        <div class="dropdown-container" id="targetSelector" style="display: flex;">
+            <div class="custom-dropdown" id="customDropdown" onclick="toggleDropdown()">
+                <img id="selectedIcon" class="icon" src="https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Sovereign.svg" alt="Selected">
+                <span id="selectedText">Sovereign (0.1%)</span>
+                <span class="dropdown-arrow" id="dropdownArrow">▼</span>
+            </div>
+            <div class="dropdown-options" id="dropdownOptions"></div>
+            <button class="arcade-btn special" onclick="rollUntilTarget()">เริ่มสุ่ม</button>
+            <button class="arcade-btn secondary" onclick="hideTargetSelector()">ยกเลิก</button>
+        </div>
+        <div class="results-panel" id="results">
+            <div class="welcome-text">กดปุ่มเพื่อเริ่มการทดลองสุ่ม Trait</div>
+        </div>
+    </div>
+    <div id="sovereign-details" class="shiny-details" style="display:none;"></div>
+    <!-- Sound Effects (placeholders) -->
+    <audio id="sfx-random" src="https://meone101201.github.io/Anime-Rangers-X-/assets/sound/random.mp3"></audio>
+    <audio id="sfx-finish" src="https://meone101201.github.io/Anime-Rangers-X-/assets/sound/finish.mp3"></audio>
+    <audio id="sfx-sovereign" src="https://meone101201.github.io/Anime-Rangers-X-/assets/sound/sovereign.mp3"></audio>
+    <div id="gacha-modal" style="display:none;">
+        <div id="gacha-modal-content"></div>
+    </div>
+    <script>
+        // --- Particle Background (Stars) ---
+        const canvas = document.getElementById('star-bg');
+        const ctx = canvas.getContext('2d');
+        let stars = [];
+
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+        for (let i = 0; i < 120; i++) {
+            stars.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                r: Math.random() * 1.5 + 0.5,
+                d: Math.random() * 0.5 + 0.2
+            });
+        }
+
+        function animateStars() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let s of stars) {
+                ctx.beginPath();
+                ctx.arc(s.x, s.y, s.r, 0, 2 * Math.PI);
+                ctx.fillStyle = 'rgba(120, 0, 255, 0.8)';
+                ctx.shadowColor = '#00eaff';
+                ctx.shadowBlur = 8;
+                ctx.fill();
+                s.y += s.d;
+                if (s.y > canvas.height) s.y = 0;
+            }
+            requestAnimationFrame(animateStars);
+        }
+        animateStars();
+        // --- End Particle BG ---
+
+        // --- Sound Effect Helper ---
+        let userInteracted = false;
+        window.addEventListener('pointerdown', () => {
+            userInteracted = true;
+        }, {
+            once: true
+        });
+        window.addEventListener('keydown', () => {
+            userInteracted = true;
+        }, {
+            once: true
+        });
+
+        function playSFX(id) {
+            if (!userInteracted) return; // ยังไม่ได้คลิก/แตะ ไม่ต้องเล่นเสียง
+            const audio = document.getElementById(id);
+            if (audio) {
+                audio.currentTime = 0;
+                audio.play();
+            }
+        }
+        // ---
+
+        // --- Gacha Data ---
+        const rarities = [{
+            name: "Sovereign",
+            chance: 0.1,
+            description: "พลังสูงสุด!",
+            details: ["-300% พลังชีวิต", "-300% ความเสียหาย", "-50% ระยะ", "-ลดจำนวนการเกิดสูงสุดเหลือ 1"],
+            rarity: "sovereign",
+            icon: "https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Sovereign.svg"
+        }, {
+            name: "Duplicator",
+            chance: 0.15,
+            description: "ยูนิตนี้จะถูกโคลนเมื่อเกิด!",
+            details: ["-100% พลังชีวิต", "-100% ความเสียหาย", "-เมื่อยูนิตนี้เกิด จะมี 2 ตัวเกิดแทน"],
+            rarity: "exotic",
+            icon: "https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Duplicator.svg"
+        }, {
+            name: "Capitalist",
+            chance: 0.25,
+            description: "ลดต้นทุนอย่างมากและแข็งแกร่ง!",
+            details: ["-50% ต้นทุน", "50% ความเสียหาย", "50% พลังชีวิต", "เพิ่มจำนวนเกิดได้อีก 1"],
+            rarity: "mythic",
+            icon: "https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Capitalist.svg"
+        }, {
+            name: "Seraph",
+            chance: 0.5,
+            description: "พลังเหนือระดับ!",
+            details: ["50% ระยะ", "50% ความเสียหาย", "50% พลังชีวิต", "30% หลบหลีก"],
+            rarity: "mythic",
+            icon: "https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Seraph.svg"
+        }, {
+            name: "Violent",
+            chance: 2.5,
+            description: "เพิ่มความเสียหายอย่างรุนแรง!",
+            details: ["25% ความเสียหาย"],
+            rarity: "legendary",
+            icon: "https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Violent.svg"
+        }, {
+            name: "Millionaire",
+            chance: 2.5,
+            description: "ลดต้นทุนอย่างมีนัยสำคัญ!",
+            details: ["20% ต้นทุน"],
+            rarity: "legendary",
+            icon: "https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Millionaire.svg"
+        }, {
+            name: "Juggernaut",
+            chance: 2.5,
+            description: "เพิ่มพลังชีวิตอย่างมาก!",
+            details: ["25% พลังชีวิต"],
+            rarity: "legendary",
+            icon: "https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Juggernaut.svg"
+        }, {
+            name: "Blitz",
+            chance: 3.5,
+            description: "เพิ่มระยะอย่างมาก!",
+            details: ["25% ระยะ"],
+            rarity: "legendary",
+            icon: "https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Blitz.svg"
+        }, {
+            name: "Jokester",
+            chance: 5,
+            description: "ยูนิตที่สมดุล!",
+            details: ["5% ระยะ", "5% ความเสียหาย", "5% พลังชีวิต"],
+            rarity: "epic",
+            icon: "https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Jokester.svg"
+        }, {
+            name: "Investor",
+            chance: 5,
+            description: "ยูนิตนี้มีต้นทุนลดลง!",
+            details: ["-10% ต้นทุน"],
+            rarity: "epic",
+            icon: "https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Investor.svg"
+        }, {
+            name: "Colossal",
+            chance: 5,
+            description: "ยูนิตนี้เชี่ยวชาญด้านพลังชีวิต!",
+            details: ["15% พลังชีวิต"],
+            rarity: "epic",
+            icon: "https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Colossal.svg"
+        }, {
+            name: "Sniper",
+            chance: 5,
+            description: "ยูนิตนี้เชี่ยวชาญด้านระยะ!",
+            details: ["15% ระยะ"],
+            rarity: "epic",
+            icon: "https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Sniper.svg"
+        }, {
+            name: "Brute",
+            chance: 5,
+            description: "ยูนิตนี้เชี่ยวชาญด้านความเสียหาย!",
+            details: ["15% ความเสียหาย"],
+            rarity: "epic",
+            icon: "https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Brute.svg"
+        }, {
+            name: "Endure I",
+            chance: 8,
+            description: "ยูนิตนี้มีพลังชีวิตเพิ่มขึ้น!",
+            details: ["5% พลังชีวิต"],
+            rarity: "rare",
+            icon: "https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Endure.svg"
+        }, {
+            name: "Endure II",
+            chance: 7,
+            description: "ยูนิตนี้มีพลังชีวิตเพิ่มขึ้น!",
+            details: ["7% พลังชีวิต"],
+            rarity: "rare",
+            icon: "https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Endure.svg"
+        }, {
+            name: "Endure III",
+            chance: 6,
+            description: "ยูนิตนี้มีพลังชีวิตเพิ่มขึ้น!",
+            details: ["10% พลังชีวิต"],
+            rarity: "rare",
+            icon: "https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Endure.svg"
+        }, {
+            name: "Horizon I",
+            chance: 8,
+            description: "ยูนิตนี้มีระยะเพิ่มขึ้น!",
+            details: ["5% ระยะ"],
+            rarity: "rare",
+            icon: "https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Horizon.svg"
+        }, {
+            name: "Horizon II",
+            chance: 7,
+            description: "ยูนิตนี้มีระยะเพิ่มขึ้น!",
+            details: ["7% ระยะ"],
+            rarity: "rare",
+            icon: "https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Horizon.svg"
+        }, {
+            name: "Horizon III",
+            chance: 6,
+            description: "ยูนิตนี้มีระยะเพิ่มขึ้น!",
+            details: ["10% ระยะ"],
+            rarity: "rare",
+            icon: "https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Horizon.svg"
+        }, {
+            name: "Superior I",
+            chance: 8,
+            description: "ยูนิตนี้มีความเสียหายเพิ่มขึ้น!",
+            details: ["5% ความเสียหาย"],
+            rarity: "rare",
+            icon: "https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Superior.svg"
+        }, {
+            name: "Superior II",
+            chance: 7,
+            description: "ยูนิตนี้มีความเสียหายเพิ่มขึ้น!",
+            details: ["7% ความเสียหาย"],
+            rarity: "rare",
+            icon: "https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Superior.svg"
+        }, {
+            name: "Superior III",
+            chance: 6,
+            description: "ยูนิตนี้มีความเสียหายเพิ่มขึ้น!",
+            details: ["10% ความเสียหาย"],
+            rarity: "rare",
+            icon: "https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Superior.svg"
+        }];
+        // ---
+        let totalRollsUntilSovereign = 0;
+        let totalSovereignCount = 0;
+        let totalRollsOverall = 0;
+        let selectedTraitValue = "Sovereign";
+        // --- Dropdown ---
+        function toggleDropdown() {
+            console.log("Dropdown toggled");
+            const options = document.getElementById('dropdownOptions');
+            const arrow = document.getElementById('dropdownArrow');
+            if (options.classList.contains('active')) {
+                options.classList.remove('active');
+                arrow.style.transform = 'rotate(0deg)';
+            } else {
+                options.classList.add('active');
+                arrow.style.transform = 'rotate(180deg)';
+            }
+            playSFX('sfx-whoosh');
+        }
+
+        function selectOption(element) {
+            const value = element.getAttribute('data-value');
+            const icon = element.getAttribute('data-icon');
+            const text = element.querySelector('span').textContent;
+            document.getElementById('selectedIcon').src = icon;
+            document.getElementById('selectedText').textContent = text;
+            selectedTraitValue = value;
+            document.getElementById('dropdownOptions').classList.remove('active');
+            document.getElementById('dropdownArrow').style.transform = 'rotate(0deg)';
+            playSFX('sfx-whoosh');
+        }
+        document.addEventListener('click', function(event) {
+            const container = document.getElementById('customDropdown');
+            const options = document.getElementById('dropdownOptions');
+            if (container && !container.contains(event.target) && options.classList.contains('active')) {
+                options.classList.remove('active');
+                document.getElementById('dropdownArrow').style.transform = 'rotate(0deg)';
+            }
+        });
+
+        function generateDropdownOptions() {
+            console.log("Dropdown options generated");
+            const optionsDiv = document.getElementById('dropdownOptions');
+            optionsDiv.innerHTML = '';
+            rarities.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'dropdown-option';
+                div.setAttribute('data-value', item.name);
+                div.setAttribute('data-icon', item.icon);
+                div.onclick = function() {
+                    selectOption(this);
+                };
+                div.innerHTML = `<img src="${item.icon}" class="icon" alt="${item.name}"> <span>${item.name} (${item.chance}%)</span>`;
+                optionsDiv.appendChild(div);
+            });
+        }
+        window.addEventListener('DOMContentLoaded', generateDropdownOptions);
+        // ---
+        function showTargetSelector() {
+            document.getElementById('targetSelector').style.display = 'flex';
+            playSFX('sfx-whoosh');
+        }
+
+        function hideTargetSelector() {
+            document.getElementById('targetSelector').style.display = 'none';
+            playSFX('sfx-whoosh');
+        }
+        // --- Gacha Logic ---
+        function getRandomItem() {
+            const random = Math.random() * 100;
+            let currentChance = 0;
+            for (let item of rarities) {
+                currentChance += item.chance;
+                if (random <= currentChance) return item;
+            }
+            return rarities[rarities.length - 1];
+        }
+
+        function displayFlipCard(item, showBack = true) {
+            const rarityClass = "rarity-" + item.rarity.trim().toLowerCase();
+            return `
+        <div class="flip-card ${rarityClass} ${showBack ? 'flipped' : ''}">
+            <div class="flip-card-inner">
+                <div class="flip-card-front">
+                    <img src="${item.icon}" alt="${item.name}" class="result-icon">
+                    <div class="result-name">???</div>
+                    <div class="result-chance">???</div>
+                </div>
+                <div class="flip-card-back">
+                    <img src="${item.icon}" alt="${item.name}" class="result-icon">
+                    <div class="result-name">${item.name}</div>
+                    <div class="rarity-label">${item.rarity.toUpperCase()}</div>
+                    <div class="result-chance">โอกาส ${item.chance}%</div>
+                    <div class="result-description">${item.description}</div>
+                    <div class="result-details">${item.details.join(' • ')}</div>
+                </div>
+            </div>
+        </div>`;
+        }
+
+        function lootboxAnimation(callback, iconUrl = null) {
+            // Show overlay
+            const overlay = document.createElement('div');
+            overlay.className = 'lootbox-overlay';
+            overlay.innerHTML = `<div class='lootbox'><div class='lootbox-light'></div><img src='${iconUrl ? iconUrl : "https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Sovereign.svg"}' style='width:80px;z-index:2;'></div>`;
+            document.body.appendChild(overlay);
+            playSFX('sfx-drum');
+            setTimeout(() => {
+                overlay.style.background = 'rgba(10,10,30,0.2)';
+                overlay.querySelector('.lootbox').style.animation = 'none';
+                overlay.querySelector('.lootbox-light').style.opacity = 0;
+                playSFX('sfx-sparkle');
+                setTimeout(() => {
+                    document.body.removeChild(overlay);
+                    if (callback) callback();
+                }, 400);
+            }, 1200);
+        }
+
+        function rollSingle() {
+            hideTargetSelector();
+            const modal = document.getElementById('gacha-modal');
+            modal.style.pointerEvents = 'none';
+            // Rolling animation
+            let rolling = true;
+            let rollItem = null;
+            let rollInterval = null;
+            let rollCount = 0;
+            const modalContent = document.getElementById('gacha-modal-content');
+            document.getElementById('gacha-modal').style.display = 'flex';
+
+            function showRolling() {
+                if (!rolling) return;
+                const randomItem = rarities[Math.floor(Math.random() * rarities.length)];
+                modalContent.innerHTML = displayTraitCard(randomItem).replace('trait-card', 'trait-card rolling');
+                playSFX('sfx-random');
+                rollCount++;
+                if (rollCount < 30) {
+                    rollInterval = setTimeout(showRolling, 40);
+                } else {
+                    rolling = false;
+                    rollItem = getRandomItem();
+                    revealResult();
+                }
+            }
+
+            function revealResult() {
+                modalContent.innerHTML = displayTraitCard(rollItem);
+                if (rollItem.name === "Sovereign") {
+                    playSFX('sfx-sovereign');
+                } else {
+                    playSFX('sfx-finish');
+                }
+                setTimeout(() => {
+                    modal.style.display = 'none';
+                    modalContent.innerHTML = '';
+                    modal.style.pointerEvents = 'auto';
+                    // Update stats after close
+                    if (rollItem.name === "Sovereign") {
+                        totalSovereignCount++;
+                        totalRollsUntilSovereign = 0;
+                    } else {
+                        totalRollsUntilSovereign++;
+                    }
+                    totalRollsOverall++;
+                    updateStats(rollItem);
+                }, 1200);
+            }
+
+            function updateStats(item) {
+                const resultsDiv = document.getElementById('results');
+                resultsDiv.innerHTML = `
+                    <div class="stats-summary">
+                        <div class="stat-item">Sovereign ที่ได้: ${totalSovereignCount}</div>
+                        <div class="stat-item">สุ่มแล้ว: ${totalRollsUntilSovereign} ครั้งได้ Sovereign</div>
+                        <div class="stat-item">รวมทั้งหมด: ${totalRollsOverall} ครั้ง</div>
+                    </div>
+                    ${displayTraitCard(item)}
+                `;
+            }
+
+            showGachaModal('', null); // Show modal
+            showRolling();
+        }
+
+        function getRarestItem(items) {
+            // Find the item(s) with the lowest chance value
+            let minChance = Math.min(...items.map(i => i.chance));
+            return items.filter(i => i.chance === minChance);
+        }
+
+        function rollTen() {
+            hideTargetSelector();
+            const modal = document.getElementById('gacha-modal');
+            modal.style.pointerEvents = 'none';
+            const modalContent = document.getElementById('gacha-modal-content');
+            modal.style.display = 'flex';
+            let rolling = true;
+            let rollCount = 0;
+            let fakeItems = [];
+
+            function showRolling() {
+                fakeItems = [];
+                for (let i = 0; i < 10; i++) {
+                    fakeItems.push(rarities[Math.floor(Math.random() * rarities.length)]);
+                }
+                modalContent.innerHTML = `
+                    <div style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center;">
+                        ${fakeItems.map(item => displayIconCard(item, false, 'gacha-rolling')).join('')}
+                    </div>
+                `;
+                playSFX('sfx-random');
+                rollCount++;
+                if (rollCount < 25) {
+                    setTimeout(showRolling, 40);
+                } else {
+                    rolling = false;
+                    revealResult();
+                }
+            }
+
+            function revealResult() {
+                const items = [];
+                let firstSovereignIndex = -1;
+                for (let i = 0; i < 10; i++) {
+                    totalRollsUntilSovereign++;
+                    totalRollsOverall++;
+                    const item = getRandomItem();
+                    items.push(item);
+                    if (item.name === "Sovereign" && firstSovereignIndex === -1) {
+                        firstSovereignIndex = i;
+                        totalSovereignCount++;
+                    }
+                }
+                const rarestItems = getRarestItem(items);
+                const isSovereign = rarestItems.some(i => i.name === "Sovereign");
+                let html = `<div style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center;">`;
+                items.forEach((item, idx) => {
+                    let highlight = rarestItems.some(r => r.name === item.name);
+                    html += displayIconCard(item, highlight, '');
+                });
+                html += `</div>`;
+                modalContent.innerHTML = html;
+
+                // Animate all Sovereign cards
+                if (isSovereign) {
+                    const cards = modalContent.querySelectorAll('.icon-card');
+                    const sovereignIndexes = items
+                        .map((item, idx) => item.name === "Sovereign" ? idx : -1)
+                        .filter(idx => idx !== -1);
+
+                    // Add vibrate to all Sovereign cards
+                    sovereignIndexes.forEach(idx => cards[idx].classList.add('gacha-vibrate'));
+
+                    setTimeout(() => {
+                        sovereignIndexes.forEach(idx => {
+                            cards[idx].classList.remove('gacha-vibrate');
+                            cards[idx].classList.add('gacha-explode');
+                        });
+                        setTimeout(() => {
+                            sovereignIndexes.forEach(idx => {
+                                cards[idx].classList.remove('gacha-explode');
+                                cards[idx].classList.add('gacha-blink');
+                            });
+                            // Auto close after 1.2 seconds of blinking
+                            setTimeout(() => {
+                                if (sovereignIndexes.length > 0) {
+                                    playSFX('sfx-sovereign');
+                                } else {
+                                    playSFX('sfx-finish');
+                                }
+                                modal.style.display = 'none';
+                                modalContent.innerHTML = '';
+                                modal.style.pointerEvents = 'auto';
+                                // Save the value before reset
+                                let rollsBeforeReset = totalRollsUntilSovereign;
+                                totalRollsUntilSovereign = 0;
+                                let actualDrawNumber = null;
+                                if (firstSovereignIndex !== -1) {
+                                    actualDrawNumber = totalRollsOverall - (10 - (firstSovereignIndex + 1));
+                                }
+                                updateStats(items, rollsBeforeReset, actualDrawNumber);
+                            }, 1200);
+                        }, 500);
+                    }, 900);
+                } else {
+                    setTimeout(() => {
+                        if (items.some(item => item.name === "Sovereign")) {
+                            playSFX('sfx-sovereign');
+                        } else {
+                            playSFX('sfx-finish');
+                        }
+                        modal.style.display = 'none';
+                        modalContent.innerHTML = '';
+                        modal.style.pointerEvents = 'auto';
+                        updateStats(items);
+                    }, 900); // or a suitable delay for non-Sovereign
+                }
+            }
+
+            function updateStats(items, rollsBeforeReset = null, actualDrawNumber = null) {
+                const resultsDiv = document.getElementById('results');
+                const itemCounts = {};
+                items.forEach(item => {
+                    itemCounts[item.name] = (itemCounts[item.name] || 0) + 1;
+                });
+                let html = `
+                    <div class="stats-summary">
+                        <div class="stat-item">Sovereign ที่ได้: ${totalSovereignCount}</div>
+                        <div class="stat-item">สุ่มแล้ว: ${(actualDrawNumber !== null ? actualDrawNumber : (rollsBeforeReset !== null ? rollsBeforeReset : totalRollsUntilSovereign))} ครั้งได้ Sovereign</div>
+                        <div class="stat-item">รวมทั้งหมด: ${totalRollsOverall} ครั้ง</div>
+                    </div>
+                    <div style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center;">
+                `;
+                Object.keys(itemCounts).sort((a, b) => {
+                    const itemA = rarities.find(r => r.name === a);
+                    const itemB = rarities.find(r => r.name === b);
+                    return itemA.chance - itemB.chance;
+                }).forEach(itemName => {
+                    const item = rarities.find(r => r.name === itemName);
+                    html += displayIconCard(item, false, '', itemCounts[itemName]);
+                });
+                html += '</div>';
+                resultsDiv.innerHTML = html;
+            }
+
+            showRolling();
+        }
+
+        function rollHundred() {
+            hideTargetSelector();
+            const modal = document.getElementById('gacha-modal');
+            modal.style.pointerEvents = 'none';
+            const modalContent = document.getElementById('gacha-modal-content');
+            modal.style.display = 'flex';
+            let rolling = true;
+            let rollCount = 0;
+            let fakeItems = [];
+
+            function showRolling() {
+                fakeItems = [];
+                for (let i = 0; i < 100; i++) {
+                    fakeItems.push(rarities[Math.floor(Math.random() * rarities.length)]);
+                }
+                modalContent.innerHTML = `
+                    <div style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center;">
+                        ${fakeItems.map(item => displayIconCard(item, false, 'gacha-rolling')).join('')}
+                    </div>
+                `;
+                playSFX('sfx-random');
+                rollCount++;
+                if (rollCount < 25) {
+                    setTimeout(showRolling, 20);
+                } else {
+                    rolling = false;
+                    revealResult();
+                }
+            }
+
+            function revealResult() {
+                const items = [];
+                let firstSovereignIndex = -1;
+                for (let i = 0; i < 100; i++) {
+                    totalRollsUntilSovereign++;
+                    totalRollsOverall++;
+                    const item = getRandomItem();
+                    items.push(item);
+                    if (item.name === "Sovereign" && firstSovereignIndex === -1) {
+                        firstSovereignIndex = i;
+                        totalSovereignCount++;
+                    }
+                }
+                const rarestItems = getRarestItem(items);
+                const isSovereign = rarestItems.some(i => i.name === "Sovereign");
+                let html = `<div style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center;">`;
+                items.forEach((item, idx) => {
+                    let highlight = rarestItems.some(r => r.name === item.name);
+                    html += displayIconCard(item, highlight, '');
+                });
+                html += `</div>`;
+                modalContent.innerHTML = html;
+
+                // Animate all Sovereign cards
+                if (isSovereign) {
+                    const cards = modalContent.querySelectorAll('.icon-card');
+                    const sovereignIndexes = items
+                        .map((item, idx) => item.name === "Sovereign" ? idx : -1)
+                        .filter(idx => idx !== -1);
+
+                    // Add vibrate to all Sovereign cards
+                    sovereignIndexes.forEach(idx => cards[idx].classList.add('gacha-vibrate'));
+
+                    setTimeout(() => {
+                        sovereignIndexes.forEach(idx => {
+                            cards[idx].classList.remove('gacha-vibrate');
+                            cards[idx].classList.add('gacha-explode');
+                        });
+                        setTimeout(() => {
+                            sovereignIndexes.forEach(idx => {
+                                cards[idx].classList.remove('gacha-explode');
+                                cards[idx].classList.add('gacha-blink');
+                            });
+                            // Auto close after 1.2 seconds of blinking
+                            setTimeout(() => {
+                                if (sovereignIndexes.length > 0) {
+                                    playSFX('sfx-sovereign');
+                                } else {
+                                    playSFX('sfx-finish');
+                                }
+                                modal.style.display = 'none';
+                                modalContent.innerHTML = '';
+                                modal.style.pointerEvents = 'auto';
+                                // Save the value before reset
+                                let rollsBeforeReset = totalRollsUntilSovereign;
+                                totalRollsUntilSovereign = 0;
+                                let actualDrawNumber = null;
+                                if (firstSovereignIndex !== -1) {
+                                    actualDrawNumber = totalRollsOverall - (100 - (firstSovereignIndex + 1));
+                                }
+                                updateStats(items, rollsBeforeReset, actualDrawNumber);
+                            }, 1200);
+                        }, 500);
+                    }, 900);
+                } else {
+                    setTimeout(() => {
+                        if (items.some(item => item.name === "Sovereign")) {
+                            playSFX('sfx-sovereign');
+                        } else {
+                            playSFX('sfx-finish');
+                        }
+                        modal.style.display = 'none';
+                        modalContent.innerHTML = '';
+                        modal.style.pointerEvents = 'auto';
+                        updateStats(items);
+                    }, 900); // or a suitable delay for non-Sovereign
+                }
+            }
+
+            function updateStats(items, rollsBeforeReset = null, actualDrawNumber = null) {
+                const resultsDiv = document.getElementById('results');
+                const itemCounts = {};
+                items.forEach(item => {
+                    itemCounts[item.name] = (itemCounts[item.name] || 0) + 1;
+                });
+                let html = `
+                    <div class="stats-summary">
+                        <div class="stat-item">Sovereign ที่ได้: ${totalSovereignCount}</div>
+                        <div class="stat-item">สุ่มแล้ว: ${(actualDrawNumber !== null ? actualDrawNumber : (rollsBeforeReset !== null ? rollsBeforeReset : totalRollsUntilSovereign))} ครั้งได้ Sovereign</div>
+                        <div class="stat-item">รวมทั้งหมด: ${totalRollsOverall} ครั้ง</div>
+                    </div>
+                    <div style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center;">
+                `;
+                Object.keys(itemCounts).sort((a, b) => {
+                    const itemA = rarities.find(r => r.name === a);
+                    const itemB = rarities.find(r => r.name === b);
+                    return itemA.chance - itemB.chance;
+                }).forEach(itemName => {
+                    const item = rarities.find(r => r.name === itemName);
+                    html += displayIconCard(item, false, '', itemCounts[itemName]);
+                });
+                html += '</div>';
+                resultsDiv.innerHTML = html;
+            }
+
+            showRolling();
+        }
+
+        function rollUntilTarget() {
+            const selectedTrait = selectedTraitValue;
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = `<div class="loading">กำลังสุ่มจนได้ ${selectedTrait} กรุณารอสักครู่...</div>`;
+            // หา icon ของ trait ที่เลือก
+            const traitObj = rarities.find(r => r.name === selectedTrait);
+            lootboxAnimation(() => {
+                setTimeout(() => {
+                    let rolls = 0;
+                    let item;
+                    do {
+                        item = getRandomItem();
+                        rolls++;
+                    } while (item.name !== selectedTrait);
+                    if (selectedTrait === "Sovereign") {
+                        playSFX('sfx-sovereign');
+                    } else {
+                        playSFX('sfx-finish');
+                    }
+                    resultsDiv.innerHTML = `
+                    <div class="stats-summary">
+                        <div class="stat-item">จำนวนครั้งที่สุ่ม: ${rolls.toLocaleString()}</div>
+                        <div class="stat-item">โอกาสที่เกิดขึ้น: ${(100 / rolls).toFixed(6)}%</div>
+                    </div>
+                    ${displayTraitCard(item)}
+                    <div style="text-align: center; margin-top: 15px; color: #27ae60; font-weight: 600;">
+                        ยินดีด้วย! ได้ ${selectedTrait} หลังจากสุ่ม ${rolls.toLocaleString()} ครั้ง
+                    </div>
+                `;
+                }, 400);
+            }, traitObj ? traitObj.icon : null);
+        }
+
+        function showRates() {
+            hideTargetSelector();
+            const resultsDiv = document.getElementById('results');
+            const groupBy = (items, keyFn) => {
+                const map = {};
+                for (const item of items) {
+                    const key = keyFn(item);
+                    if (!map[key]) map[key] = [];
+                    map[key].push(item);
+                }
+                return map;
+            };
+            const grouped = groupBy(rarities, item => {
+                if (item.name.includes("Endure")) return "Endure";
+                if (item.name.includes("Horizon")) return "Horizon";
+                if (item.name.includes("Superior")) return "Superior";
+                return item.name;
+            });
+            let html = '<div style="display:flex;flex-wrap:wrap;gap:18px;justify-content:center;">';
+            Object.entries(grouped).forEach(([key, traits]) => {
+                const base = traits[0];
+                html += `<div style="display:flex;flex-direction:column;align-items:center;min-width:110px;max-width:160px;">
+                    ${displayIconCard(base, false, '')}
+                    <div style="margin-top:8px;font-size:1.08em;font-weight:600;color:#fff;text-shadow:0 0 8px var(--rarity-glow);">${base.name}</div>
+                    <div style="color:#b3b3ff;font-size:0.98em;">${base.chance}%</div>
+                    <div style="color:#a0eaff;font-size:0.95em;text-align:center;">${base.description}</div>
+                    <div style="color:#7fffd4;font-size:0.93em;text-align:center;margin-top:2px;">${base.details ? base.details.join('<br>') : ''}</div>
+                </div>`;
+            });
+            html += '</div>';
+            resultsDiv.innerHTML = html;
+        }
+
+        function resetSovereignCount() {
+            hideTargetSelector();
+            totalSovereignCount = 0;
+            totalRollsUntilSovereign = 0;
+            totalRollsOverall = 0;
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = `
+            <div class="stats-summary">
+                <div class="stat-item">รีเซ็ตจำนวน Sovereign และการนับครั้งเรียบร้อยแล้ว</div>
+            </div>
+            <div class="welcome-text">กดปุ่มเพื่อเริ่มการทดลองสุ่ม Trait ใหม่</div>
+        `;
+        }
+
+        function showGachaModal(content, onClose) {
+            const modal = document.getElementById('gacha-modal');
+            const modalContent = document.getElementById('gacha-modal-content');
+            modalContent.innerHTML = content;
+            modal.style.display = 'flex';
+
+            function closeModal() {
+                modal.style.display = 'none';
+                modalContent.innerHTML = '';
+                modal.removeEventListener('click', closeModal);
+                if (onClose) onClose();
+            }
+            modal.addEventListener('click', closeModal);
+        }
+
+        function displayIconCard(item, highlight = false, extraClass = "", count = null) {
+            const rarityClass = "rarity-" + item.rarity.trim().toLowerCase();
+            return `
+                <div class="icon-card-wrapper">
+                    <div class="icon-card ${rarityClass}${highlight ? ' gacha-highlight' : ''}${extraClass ? ' ' + extraClass : ''}" style="display:flex;flex-direction:column;align-items:center;justify-content:center;">
+                        <img src="${item.icon}" alt="${item.name}" style="width:48px;height:48px;">
+                    </div>
+                    ${count !== null ? `<div class="icon-count ${rarityClass}">x${count}</div>` : ''}
+                </div>
+            `;
+        }
+
+        function showSovereignDetails() {
+            const detailsDiv = document.getElementById('sovereign-details');
+            detailsDiv.innerHTML = `
+                <img src="https://meone101201.github.io/Anime-Rangers-X-/assets/my-icons/Sovereign.svg" style="width:48px;vertical-align:middle;margin-bottom:8px;">
+                <div style="font-size:1.2em;font-weight:700;margin-bottom:6px;">Sovereign (0.1%)</div>
+                <div>พลังสูงสุด!<br>
+                -300% พลังชีวิต • -300% ความเสียหาย • -50% ระยะ<br>
+                ลดจำนวนการเกิดสูงสุดเหลือ 1</div>
+            `;
+            detailsDiv.style.display = 'block';
+        }
+
+        function displayTraitCard(item) {
+            const rarityClass = "rarity-" + item.rarity.trim().toLowerCase();
+            return `
+                <div class="trait-card ${rarityClass}">
+                    <img src="${item.icon}" alt="${item.name}" class="trait-card-icon">
+                    <div class="trait-card-title">${item.name}</div>
+                    <div class="trait-card-chance">โอกาส ${item.chance}%</div>
+                    <div class="trait-card-desc">${item.description}</div>
+                    <div class="trait-card-details">${item.details.join(' • ')}</div>
+                </div>
+            `;
+        }
+
+        // เพิ่มฟังก์ชัน playSFXHover เพื่อป้องกันเสียงซ้อน
+        let sfxHoverTimeout = null;
+        function playSFXHover() {
+            if (sfxHoverTimeout) return; // ป้องกันซ้อนถ้า hover ซ้ำเร็ว
+            playSFX('sfx-random');
+            sfxHoverTimeout = setTimeout(() => { sfxHoverTimeout = null; }, 120); // กัน spam
+        }
+
+        // หลัง DOMContentLoaded
+        window.addEventListener('DOMContentLoaded', function() {
+            generateDropdownOptions();
+            // เพิ่ม event ให้ปุ่ม arcade-btn
+            document.querySelectorAll('.arcade-btn').forEach(btn => {
+                btn.addEventListener('mouseenter', playSFXHover);
+            });
+            // เพิ่ม event ให้ option ใน custom-dropdown
+            document.getElementById('dropdownOptions').addEventListener('mouseover', function(e) {
+                if (e.target.classList.contains('dropdown-option') || e.target.closest('.dropdown-option')) {
+                    playSFXHover();
+                }
+            });
+        });
+
+        // --- Interactive Particle Effect ---
+        const particleCanvas = document.getElementById('particle-bg');
+        const pctx = particleCanvas.getContext('2d');
+        let particles = [];
+        function resizeParticle() {
+            particleCanvas.width = window.innerWidth;
+            particleCanvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeParticle);
+        resizeParticle();
+        function createParticle(x, y) {
+            const angle = Math.random() * 2 * Math.PI;
+            const speed = Math.random() * 2 + 1;
+            particles.push({
+                x, y,
+                vx: Math.cos(angle) * speed,
+                vy: Math.sin(angle) * speed,
+                r: Math.random() * 2 + 1,
+                life: 60 + Math.random() * 40
+            });
+        }
+        function animateParticles() {
+            pctx.clearRect(0, 0, particleCanvas.width, particleCanvas.height);
+            for (let i = particles.length - 1; i >= 0; i--) {
+                const p = particles[i];
+                p.x += p.vx;
+                p.y += p.vy;
+                p.life--;
+                pctx.beginPath();
+                pctx.arc(p.x, p.y, p.r, 0, 2 * Math.PI);
+                pctx.fillStyle = 'rgba(0,234,255,0.7)';
+                pctx.shadowColor = '#fff';
+                pctx.shadowBlur = 8;
+                pctx.fill();
+                if (p.life <= 0) particles.splice(i, 1);
+            }
+            requestAnimationFrame(animateParticles);
+        }
+        animateParticles();
+        window.addEventListener('pointermove', e => {
+            for (let i = 0; i < 2; i++) createParticle(e.clientX, e.clientY);
+        });
+        window.addEventListener('click', e => {
+            for (let i = 0; i < 12; i++) createParticle(e.clientX, e.clientY);
+        });
+        // --- End Particle Effect ---
+        // --- Theme Switcher ---
+        function setTheme(theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+            localStorage.setItem('arx-theme', theme);
+        }
+        (function(){
+            const saved = localStorage.getItem('arx-theme');
+            if(saved) setTheme(saved);
+        })();
+        // --- Ripple Effect for Buttons ---
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.arcade-btn, .theme-btn').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    const ripple = document.createElement('span');
+                    ripple.className = 'ripple';
+                    const rect = btn.getBoundingClientRect();
+                    ripple.style.width = ripple.style.height = Math.max(rect.width, rect.height) + 'px';
+                    ripple.style.left = (e.clientX - rect.left - rect.width/2) + 'px';
+                    ripple.style.top = (e.clientY - rect.top - rect.height/2) + 'px';
+                    btn.appendChild(ripple);
+                    setTimeout(() => ripple.remove(), 600);
+                });
+            });
+        });
+        // --- Card Shine Effect ---
+        function addShineToCards() {
+            document.querySelectorAll('.trait-card').forEach(card => {
+                if (!card.querySelector('.shine')) {
+                    const shine = document.createElement('div');
+                    shine.className = 'shine';
+                    card.appendChild(shine);
+                }
+            });
+        }
+        // เรียกหลังแสดงผลการ์ด
+        const origDisplayTraitCard = window.displayTraitCard;
+        window.displayTraitCard = function(item) {
+            const html = origDisplayTraitCard(item);
+            setTimeout(addShineToCards, 10);
+            return html;
+        }
+        // --- End Card Shine ---
+        // --- Parallax Mouse Move ---
+        let parallaxEls = [
+            document.getElementById('aurora-bg'),
+            document.getElementById('parallax-bg'),
+            document.getElementById('star-bg'),
+            document.getElementById('particle-bg')
+        ];
+        window.addEventListener('mousemove', function(e) {
+            const x = e.clientX / window.innerWidth - 0.5;
+            const y = e.clientY / window.innerHeight - 0.5;
+            parallaxEls.forEach((el, i) => {
+                if (!el) return;
+                const factor = (i+1) * 8;
+                el.style.transform = `translate(${x*factor}px, ${y*factor}px)`;
+            });
+        });
+        // --- End Parallax ---
+        // --- Gacha Burst Effect & Floating Neon ---
+        // function showBurstEffect(targetEl) { ... }
+        // function showFloatingNeon(text) { ... }
+        // --- Patch rollSingle/rollTen/rollHundred for burst & neon ---
+        // const origRollSingle = window.rollSingle;
+        // window.rollSingle = function() { ... }
+        // const origRollTen = window.rollTen;
+        // window.rollTen = function() { ... }
+        // const origRollHundred = window.rollHundred;
+        // window.rollHundred = function() { ... }
+        // ... existing code ...
+    </script>
+    <style>
+        footer a {
+            transition: color 0.3s ease, text-shadow 0.3s ease;
+        }
+        
+        footer a:hover {
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+            color: #000000 !important;
+        }
+    </style>
+
+    <footer style="margin-top: 50px; text-align: center; font-size: 0.95em; color: rgba(0, 153, 255, 0.8); font-weight: 400; text-shadow: 0 1px 2px rgba(0,0,0,0.3);">
+        &copy; 2025
+        <strong style="color: rgb(0, 255, 242);">Test Random Trait Reroll</strong> | Powered by
+        <a href="https://www.roblox.com/share?code=ca8dcfc58ec8ce41a6d6d0db95061422&type=ExperienceDetails&stamp=1749049590375" target="_blank" style="color: #d40000; text-decoration: none;">AnimeRange X</a><br> Developed with care by
+        <a href="https://www.facebook.com/meone.355238/" target="_blank" style="color: #0400ff; text-decoration: none;">Meone</a>
+    </footer>
+</body>
+
+</html>
